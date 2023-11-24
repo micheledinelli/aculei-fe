@@ -4,6 +4,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  .font-outline-2 {
+    -webkit-text-stroke: 0.4px black;
+  }
+  .font-outline-4 {
+    -webkit-text-stroke: 4px black;
+  }
+}
+
 :root {
   font-family: "Poppins", Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 
