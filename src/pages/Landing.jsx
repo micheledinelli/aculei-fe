@@ -17,9 +17,13 @@ export default function Landing() {
         <div className="text-center w-full text-xxl text-white">{title}</div>
       </div>
       <div className="inline-block absolute w-full bottom-2 inset-x-0 text-white text-3xl text-center">
-        <div className="flex flex-row justify-evenly">
-          <NavLink to={aboutPath}>{about}</NavLink>
-          <NavLink to={archivePath}>{archive}</NavLink>
+        <div className="flex flex-row justify-center items-center">
+          <div className="p-3 m-3">
+            <NavLink to={aboutPath}>{about}</NavLink>
+          </div>
+          <div className="p-3 m-3">
+            <NavLink to={archivePath}>{archive}</NavLink>
+          </div>
         </div>
       </div>
     </div>

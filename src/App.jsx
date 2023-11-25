@@ -7,7 +7,7 @@ import {
 
 import Landing from "./pages/Landing";
 import About from "./pages/About";
-import Archive from "./components/Archive";
+import Archive from "./pages/Archive";
 
 const router = createBrowserRouter([{ path: "*", Component: Root }]);
 

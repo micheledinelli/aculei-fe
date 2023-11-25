@@ -1,13 +1,50 @@
+import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
-
-import MainImage from "../assets/sample.jpeg";
+import ImageZoom from "react-image-zooom";
 
 export default function Archive() {
+  const home = "HOME";
+
+  const [image, setImage] = useState(null);
+  const [zoomProps, setZoomProps] = useState({
+    width: 400,
+    height: 400,
+    zoomWidth: 500,
+    img: "",
+    className: "object-cover w-full h-full",
+  });
+
+  useEffect(() => {
+    fetchImage();
+  }, []);
+
+  const fetchImage = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/api/v1/image"); // Replace with your server URL
+      if (response.ok) {
+        const imageUrl = URL.createObjectURL(await response.blob());
+        setImage(imageUrl);
+        setZoomProps({ ...zoomProps, img: imageUrl });
+      } else {
+        console.error("Failed to fetch image");
+      }
+    } catch (error) {
+      console.error("Error fetching image:", error);
+    }
+  };
+
   return (
-    <div className="overflow-x-hidden bg-black text-white h-screen">
-      <img className="object-cover w-full h-full" src={MainImage}></img>
-      <div className="absolute top-0 left-0 m-4 px-4 py-2 text-3xl">
-        <NavLink to="/">HOME</NavLink>
+    <div className="overflow-hidden bg-black text-white h-screen cursor-pointer">
+      {image && (
+        <ImageZoom
+          src={image}
+          alt="A image to apply the ImageZoom plugin"
+          zoom="200"
+          className="my-class"
+        />
+      )}
+      <div className="absolute top-0 left-0 m-4 px-4 py-2 text-3xl hover:underline hover:underline-offset-8 decoration-4">
+        <NavLink to="/">{home}</NavLink>
       </div>
       <div className="absolute top-0 right-0 m-4 px-4 py-2">
         <NavLink to="/">
@@ -17,7 +54,7 @@ export default function Archive() {
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            class="w-8 h-8"
+            className="w-8 h-8"
           >
             <path
               strokeLinecap="round"
@@ -32,18 +69,20 @@ export default function Archive() {
           </svg>
         </NavLink>
       </div>
-      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-center drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
-        <div className="flex space-x-4 rounded-md text-2xl">
-          <button className="px-4 py-2 rounded-lg">ANIMAL</button>
-          <button className="px-4 py-2 rounded-lg">CAM</button>
-          <button className="px-4 py-2 rounded-lg">
+      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-center rounded-lg bg-black bg-opacity-50">
+        <div className="flex space-x-4 rounded-md text-2xl p-1">
+          <button className="px-4 py-2 rounded-lg hover:scale-110">
+            ANIMAL
+          </button>
+          <button className="px-4 py-2 rounded-lg hover:scale-110">CAM</button>
+          <button className="px-4 py-2 rounded-lg hover:scale-110">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth="1.5"
               stroke="currentColor"
-              class="w-6 h-6"
+              className="w-6 h-6"
             >
               <path
                 strokeLinecap="round"
@@ -52,15 +91,17 @@ export default function Archive() {
               />
             </svg>
           </button>
-          <button className="px-4 py-2 rounded-lg">C° or F°</button>
-          <button className="px-4 py-2 rounded-lg">
+          <button className="px-4 py-2 rounded-lg hover:scale-110">
+            C° or F°
+          </button>
+          <button className="px-4 py-2 rounded-lg hover:scale-110">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth="1.5"
               stroke="currentColor"
-              class="w-6 h-6"
+              className="w-6 h-6"
             >
               <path
                 strokeLinecap="round"
