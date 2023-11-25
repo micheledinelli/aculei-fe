@@ -43,10 +43,10 @@ export default function Archive() {
           className="my-class"
         />
       )}
-      <div className="absolute top-0 left-0 m-4 px-4 py-2 text-3xl hover:underline hover:underline-offset-8 decoration-4">
+      <div className="absolute top-0 left-0 m-4 px-4 py-2 text-3xl hover:underline hover:underline-offset-8 decoration-4 z-10">
         <NavLink to="/">{home}</NavLink>
       </div>
-      <div className="absolute top-0 right-0 m-4 px-4 py-2">
+      <div className="absolute top-0 right-0 m-4 px-4 py-2 z-10">
         <NavLink to="/">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -69,7 +69,7 @@ export default function Archive() {
           </svg>
         </NavLink>
       </div>
-      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-center rounded-lg bg-black bg-opacity-50">
+      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-center rounded-lg bg-black bg-opacity-50 z-10">
         <div className="flex space-x-4 rounded-md text-2xl p-1">
           <button className="px-4 py-2 rounded-lg hover:scale-110">
             ANIMAL
