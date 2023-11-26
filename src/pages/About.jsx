@@ -92,7 +92,7 @@ export default function About() {
           riproporre come esperienza virtuale su ACULEI.EU.
         </p>
       </div>
-      <div className="flex justify-center items-center text-3xl mt-10 p-10 bg-black text-white">
+      <div className="flex justify-center items-center text-3xl mt-10 p-10 bg-black text-white hover:underline hover:underline-offset-8 decoration-4">
         <NavLink to={"/"}>{home}</NavLink>
       </div>
     </div>
