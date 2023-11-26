@@ -21,10 +21,11 @@ const AnimalComponent = () => {
     };
   }, [fullScreenIndex]);
 
-  // Function to fetch a new image from the server
   const fetchNewImage = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/v1/image");
+      const response = await fetch(
+        "https://flask-production-21b28.up.railway.app/api/v1/image"
+      );
       if (response.ok) {
         const imageUrl = URL.createObjectURL(await response.blob());
         const newImage = {
@@ -32,8 +33,8 @@ const AnimalComponent = () => {
           url: imageUrl,
           x: Math.random() * (window.innerWidth - 200),
           y: Math.random() * (window.innerHeight - 200),
-          width: 200,
-          height: 200,
+          width: 300,
+          height: 300,
           offsetX: 0,
           offsetY: 0,
           isDragging: false,
@@ -51,7 +52,6 @@ const AnimalComponent = () => {
   const spawnRandomImage = () => {
     fetchNewImage();
     if (isInGridMode) {
-      // If in grid mode, toggle grid to rearrange images after adding a new image
       toggleGridMode();
     }
   };
@@ -110,30 +110,8 @@ const AnimalComponent = () => {
       setInitialPositions(
         images.map((image) => ({ id: image.id, x: image.x, y: image.y }))
       );
-      // Rearrange images in a grid
       setImages((prevImages) => {
         const updatedImages = [...prevImages];
-        const numCols = Math.ceil(Math.sqrt(updatedImages.length));
-        const gridSpacing = 20; // Adjust spacing between images in the grid
-        let currentRow = 0;
-        let currentCol = 0;
-
-        updatedImages.forEach((image, index) => {
-          const gridX =
-            window.innerWidth / 2 +
-            (currentCol - numCols / 2) * (image.width + gridSpacing);
-          const gridY =
-            window.innerHeight / 2 +
-            (currentRow - numCols / 2) * (image.height + gridSpacing);
-          image.x = gridX;
-          image.y = gridY;
-
-          currentCol++;
-          if (currentCol === numCols) {
-            currentCol = 0;
-            currentRow++;
-          }
-        });
         return updatedImages;
       });
     } else {
@@ -152,10 +130,91 @@ const AnimalComponent = () => {
     }
   };
 
+  const gridLayout = (
+    <div className="w-4/5 h-full m-auto grid grid-cols-3 gap-6 p-10 overflow-y-scroll">
+      {images.map((image, index) => (
+        <div key={image.id}>
+          {fullScreenIndex === index && image.isFullScreen ? (
+            <img
+              src={image.url}
+              alt=""
+              style={{
+                position: "fixed",
+                top: 0,
+                left: 0,
+                width: "100vw",
+                height: "100vh",
+                objectFit: "cover",
+                zIndex: 9999,
+              }}
+              onClick={() => toggleFullScreen(index)} // Toggle off when clicked
+            ></img>
+          ) : (
+            <div
+              key={image.id}
+              className="relative"
+              onDoubleClick={() => toggleFullScreen(index)}
+            >
+              <img src={image.url} className="w-full h-auto cursor-pointer" />
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+
+  const regularLayout = (
+    <div className="absolute top-0 left-0 w-full h-full p-10">
+      {images.map((image, index) => (
+        <React.Fragment key={image.id}>
+          {fullScreenIndex === index && image.isFullScreen ? (
+            <img
+              src={image.url}
+              style={{
+                position: "fixed",
+                top: 0,
+                left: 0,
+                width: "100vw",
+                height: "100vh",
+                objectFit: "cover",
+                zIndex: 9999,
+              }}
+              onClick={() => toggleFullScreen(index)} // Toggle off when clicked
+            />
+          ) : (
+            <img
+              key={image.id}
+              src={image.url}
+              style={{
+                position: "absolute",
+                left: image.x,
+                top: image.y,
+                width: image.isFullScreen ? "0" : `${image.width}px`,
+                height: image.isFullScreen ? "0" : `${image.height}px`,
+                cursor: image.isDragging ? "grabbing" : "pointer",
+                zIndex: image.isFullScreen ? 0 : 1,
+                objectFit: "cover",
+                transform: image.isFullScreen
+                  ? "none"
+                  : `translate(-50%, -50%)`,
+              }}
+              onMouseDown={(e) => handleMouseDown(e, index)}
+              onMouseMove={(e) => handleMouseMove(e, index)}
+              onMouseUp={() => handleMouseUp(index)}
+              onDoubleClick={() => toggleFullScreen(index)}
+            />
+          )}
+        </React.Fragment>
+      ))}
+    </div>
+  );
+
   return (
     <div className="bg-black h-screen text-white">
+      {isInGridMode ? gridLayout : regularLayout}
+
       <button
-        className="inline-block absolute w-full bottom-2 inset-x-0 text-white text-3xl text-center"
+        className="inline-block fixed w-full bottom-2 inset-x-0 text-white text-3xl text-center"
         onClick={spawnRandomImage}
       >
         NEW IMAGE
@@ -168,9 +227,9 @@ const AnimalComponent = () => {
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
-          stroke-width="1.5"
+          strokeWidth="1.5"
           stroke="currentColor"
-          class="w-6 h-6"
+          className="w-6 h-6"
         >
           <path
             strokeLinecap="round"
@@ -179,96 +238,6 @@ const AnimalComponent = () => {
           />
         </svg>
       </div>
-
-      {isInGridMode ? (
-        <div className="w-4/5 h-full m-auto grid grid-cols-auto minmax-200px gap-10 p-10">
-          {images.map((image, index) => (
-            <React.Fragment key={image.id}>
-              {fullScreenIndex === index && image.isFullScreen ? (
-                <img
-                  src={image.url}
-                  alt="Animal"
-                  style={{
-                    position: "fixed",
-                    top: 0,
-                    left: 0,
-                    width: "100vw",
-                    height: "100vh",
-                    objectFit: "cover",
-                    zIndex: 9999,
-                  }}
-                  onClick={() => toggleFullScreen(index)} // Toggle off when clicked
-                />
-              ) : (
-                <img
-                  src={image.url}
-                  alt="Animal"
-                  style={{
-                    position: "absolute",
-                    left: image.x,
-                    top: image.y,
-                    width: image.isFullScreen ? "0" : image.width,
-                    height: image.isFullScreen ? "0" : image.height,
-                    cursor: image.isDragging ? "grabbing" : "pointer",
-                    zIndex: image.isFullScreen ? 0 : 1,
-                    objectFit: "cover",
-                    transform: image.isFullScreen
-                      ? "none"
-                      : `translate(-50%, -50%)`,
-                  }}
-                  onMouseDown={(e) => handleMouseDown(e, index)}
-                  onMouseMove={(e) => handleMouseMove(e, index)}
-                  onMouseUp={() => handleMouseUp(index)}
-                  onDoubleClick={() => toggleFullScreen(index)}
-                />
-              )}
-            </React.Fragment>
-          ))}
-        </div>
-      ) : (
-        images.map((image, index) => (
-          <React.Fragment key={image.id}>
-            {fullScreenIndex === index && image.isFullScreen ? (
-              <img
-                src={image.url}
-                alt="Animal"
-                style={{
-                  position: "fixed",
-                  top: 0,
-                  left: 0,
-                  width: "100vw",
-                  height: "100vh",
-                  objectFit: "cover",
-                  zIndex: 9999,
-                }}
-                onClick={() => toggleFullScreen(index)} // Toggle off when clicked
-              />
-            ) : (
-              <img
-                src={image.url}
-                alt="Animal"
-                style={{
-                  position: "absolute",
-                  left: image.x,
-                  top: image.y,
-                  width: image.isFullScreen ? "0" : image.width,
-                  height: image.isFullScreen ? "0" : image.height,
-                  cursor: image.isDragging ? "grabbing" : "pointer",
-                  zIndex: image.isFullScreen ? 0 : 1,
-                  objectFit: "cover",
-                  transform: image.isFullScreen
-                    ? "none"
-                    : `translate(-50%, -50%)`,
-                }}
-                onMouseDown={(e) => handleMouseDown(e, index)}
-                onMouseMove={(e) => handleMouseMove(e, index)}
-                onMouseUp={() => handleMouseUp(index)}
-                onDoubleClick={() => toggleFullScreen(index)}
-              />
-            )}
-          </React.Fragment>
-        ))
-      )}
     </div>
   );
 };
