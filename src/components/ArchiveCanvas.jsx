@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import React from "react";
+import.meta.env.SERVER_URL;
 
 const AnimalComponent = () => {
   const [images, setImages] = useState([]);
@@ -24,7 +25,7 @@ const AnimalComponent = () => {
   const fetchNewImage = async () => {
     try {
       const response = await fetch(
-        "https://flask-production-21b28.up.railway.app/api/v1/image"
+        import.meta.env.VITE_SERVER_URL + "/api/v1/image"
       );
       if (response.ok) {
         const imageUrl = URL.createObjectURL(await response.blob());
@@ -220,7 +221,7 @@ const AnimalComponent = () => {
         NEW IMAGE
       </button>
       <div
-        className="absolute top-0 right-0 m-4 px-4 py-2 z-10"
+        className="absolute top-0 right-2 m-4 px-4 py-2 z-10 cursor-pointer"
         onClick={toggleGridMode}
       >
         <svg
@@ -229,7 +230,7 @@ const AnimalComponent = () => {
           viewBox="0 0 24 24"
           strokeWidth="1.5"
           stroke="currentColor"
-          className="w-6 h-6"
+          className="w-8 h-8"
         >
           <path
             strokeLinecap="round"
