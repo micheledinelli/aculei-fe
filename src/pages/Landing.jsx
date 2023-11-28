@@ -2,13 +2,40 @@ import MainImage from "../assets/main.jpeg";
 
 import { NavLink } from "react-router-dom";
 
+import { useEffect, useState } from "react";
+
 export default function Landing() {
+  const [isMobile, setIsMobile] = useState(false);
+
   const title = "ACULEI";
   const about = "ABOUT";
   const archive = "ARCHIVE";
 
   const aboutPath = "/about";
   const archivePath = "/archive";
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 640); // Change the width value as per your mobile breakpoint
+    };
+
+    // Initial check on component mount
+    handleResize();
+
+    // Event listener for window resize
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup on component unmount
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  if (isMobile) {
+    return (
+      <div className="h-screen flex items-center justify-center text-center">
+        <p>Please visit us from a desktop for the best experience.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="h-screen w-full overflow-x-hidden select-none">

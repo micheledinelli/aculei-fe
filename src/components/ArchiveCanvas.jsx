@@ -214,32 +214,37 @@ const AnimalComponent = () => {
     <div className="bg-black h-screen text-white">
       {isInGridMode ? gridLayout : regularLayout}
 
-      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-center rounded-lg bg-gray-500 bg-opacity-50 flex text-2xl p-3 z-10">
-        <button
-          className="mx-2 hover:scale-110"
-          onClick={() => spawnRandomImage()}
-        >
-          ANIMAL
-        </button>
-        <button
-          className="mx-2 hover:scale-110"
-          onClick={() => spawnRandomImage()}
-        >
-          MOON
-        </button>
-        <button
-          className="mx-2 hover:scale-110"
-          onClick={() => spawnRandomImage()}
-        >
-          C° or F°
-        </button>
-        <button
-          className="mx-2 hover:scale-110"
-          onClick={() => spawnRandomImage()}
-        >
-          CAM
-        </button>
-      </div>
+      {!isInGridMode ? (
+        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-center rounded-lg bg-gray-500 bg-opacity-50 flex text-2xl p-3 z-10">
+          <button
+            className="mx-2 hover:scale-110"
+            onClick={() => spawnRandomImage()}
+          >
+            ANIMAL
+          </button>
+          <button
+            className="mx-2 hover:scale-110"
+            onClick={() => spawnRandomImage()}
+          >
+            MOON
+          </button>
+          <button
+            className="mx-2 hover:scale-110"
+            onClick={() => spawnRandomImage()}
+          >
+            C° or F°
+          </button>
+          <button
+            className="mx-2 hover:scale-110"
+            onClick={() => spawnRandomImage()}
+          >
+            CAM
+          </button>
+        </div>
+      ) : (
+        <></>
+      )}
+
       <div
         className="absolute top-0 right-2 m-4 px-4 py-2 z-10 cursor-pointer"
         onClick={toggleGridMode}
