@@ -16,7 +16,7 @@ export default function Landing() {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 640); // Change the width value as per your mobile breakpoint
+      setIsMobile(window.innerWidth < 640);
     };
 
     // Initial check on component mount
