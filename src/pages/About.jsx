@@ -58,7 +58,7 @@ export default function About() {
           Frutto di questo lavoro fu l'editoriale dedicato a Birretta, la
           capretta scomparsa, interamente fotografato da Platoon durante le 54
           notti di lockdown pubblicato in Nothing To See Here il magazine di
-          Naba curato da Francesco Jodice. 1Una volta tornati alla “normalità”
+          Naba curato da Francesco Jodice. Una volta tornati alla “normalità”
           della situazione sanitaria ho deciso di proseguire l'indagine sul
           territorio mediante questi strumenti parzialmente autonomi al fine di
           soddisfare la mia curiosità rispetto a quello che accadeva intorno a
@@ -89,7 +89,7 @@ export default function About() {
           fatto alla tecnologia la sua posizione all'interno dell'inquadratura.
           C'è quindi una sorta di interazione tra animale e tecnologia alla base
           di tutte le immagini qui proposte, la stessa che si vorrebbe provare a
-          riproporre come esperienza virtuale su ACULEI.EU.
+          riproporre come esperienza virtuale su aculei.xyz.
         </p>
       </div>
       <div className="flex justify-center items-center text-3xl mt-10 p-10 bg-black text-white hover:underline hover:underline-offset-8 decoration-4">
