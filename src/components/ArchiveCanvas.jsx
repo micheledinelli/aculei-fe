@@ -193,7 +193,7 @@ const AnimalComponent = () => {
                 width: image.isFullScreen ? "0" : `${image.width}px`,
                 height: image.isFullScreen ? "0" : `${image.height}px`,
                 cursor: image.isDragging ? "grabbing" : "pointer",
-                zIndex: image.isFullScreen ? 0 : 1,
+                zIndex: image.isDragging ? 1 : 0,
                 objectFit: "cover",
                 transform: image.isFullScreen
                   ? "none"
