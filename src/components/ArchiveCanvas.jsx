@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import React from "react";
 import ImageFullScreen from "./ImageFullScreen";
+import.meta.env.SERVER_URL;
 
 const AnimalComponent = () => {
   const [images, setImages] = useState([]);
