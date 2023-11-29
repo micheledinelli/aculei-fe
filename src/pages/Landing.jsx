@@ -1,8 +1,8 @@
-import MainImage from "../assets/main.jpeg";
-
 import { NavLink } from "react-router-dom";
 
 import { useEffect, useState } from "react";
+
+import Video from "../assets/video.mp4";
 
 export default function Landing() {
   const [isMobile, setIsMobile] = useState(false);
@@ -39,7 +39,12 @@ export default function Landing() {
 
   return (
     <div className="h-screen w-full overflow-x-hidden select-none">
-      <img className="object-cover w-full h-full" src={MainImage}></img>
+      {/* <img className="object-cover w-full h-full" src={MainImage}></img> */}
+
+      <video className=" w-full h-full object-cover" autoPlay loop muted>
+        <source src={Video} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
       <div className=" absolute top-0 left-0 w-screen h-2/5 flex flex-row items-center justify-center">
         <div className="text-center w-full overflow-x-hidden text-[8rem] sm:text-[12rem] md:text-[18rem] lg:text-[18rem] xl:text-[32rem] text-white">
           {title}
