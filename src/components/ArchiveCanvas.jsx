@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import React from "react";
-import ImageFullScreen from "./ImageFullScreen";
+// import ImageFullScreen from "./ImageFullScreen";
 import.meta.env.SERVER_URL;
-
 const AnimalComponent = () => {
   const [images, setImages] = useState([]);
   const [fullScreenIndex, setFullScreenIndex] = useState(null);
@@ -172,14 +171,11 @@ const AnimalComponent = () => {
       {images.map((image, index) => (
         <React.Fragment key={image.id}>
           {fullScreenIndex === index && image.isFullScreen ? (
-            <div>
-              <div className="bg-red-600">Immagine full screen </div>
-              <ImageFullScreen
-                imageUrl={image.url}
-                toggleFullScreen={toggleFullScreen}
-                index={index}
-              />
-            </div>
+            <img
+              src={image.url}
+              className="absolute top-0 left-0 w-screen h-screen object-scale-down z-[9999]"
+              onClick={() => toggleFullScreen(index)}
+            />
           ) : (
             <img
               key={image.id}
