@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import React from "react";
-import.meta.env.SERVER_URL;
+import ImageFullScreen from "./ImageFullScreen";
 
 const AnimalComponent = () => {
   const [images, setImages] = useState([]);
@@ -58,8 +58,10 @@ const AnimalComponent = () => {
   };
 
   const toggleFullScreen = (index) => {
+    console.log("index", index);
     setImages((prevImages) => {
       const updatedImages = [...prevImages];
+      console.log("update images", updatedImages[index]);
       updatedImages[index].isFullScreen = !updatedImages[index].isFullScreen;
       return updatedImages;
     });
@@ -145,7 +147,7 @@ const AnimalComponent = () => {
                 left: 0,
                 width: "100vw",
                 height: "100vh",
-                objectFit: "cover",
+                objectFit: "contain",
                 zIndex: 9999,
               }}
               onClick={() => toggleFullScreen(index)} // Toggle off when clicked
@@ -165,23 +167,18 @@ const AnimalComponent = () => {
   );
 
   const regularLayout = (
-    <div className="absolute top-0 left-0 w-full h-full p-10">
+    <div className="absolute top-0 left-0 w-screen h-screen">
       {images.map((image, index) => (
         <React.Fragment key={image.id}>
           {fullScreenIndex === index && image.isFullScreen ? (
-            <img
-              src={image.url}
-              style={{
-                position: "fixed",
-                top: 0,
-                left: 0,
-                width: "100vw",
-                height: "100vh",
-                objectFit: "cover",
-                zIndex: 9999,
-              }}
-              onClick={() => toggleFullScreen(index)} // Toggle off when clicked
-            />
+            <div>
+              <div className="bg-red-600">Immagine full screen </div>
+              <ImageFullScreen
+                imageUrl={image.url}
+                toggleFullScreen={toggleFullScreen}
+                index={index}
+              />
+            </div>
           ) : (
             <img
               key={image.id}
