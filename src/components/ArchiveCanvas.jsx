@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import React from "react";
 // import ImageFullScreen from "./ImageFullScreen";
 import.meta.env.SERVER_URL;
-const AnimalComponent = () => {
+const ArchiveCanvas = () => {
   const [images, setImages] = useState([]);
   const [fullScreenIndex, setFullScreenIndex] = useState(null);
   const [isInGridMode, setIsInGridMode] = useState(false);
@@ -262,4 +262,4 @@ const AnimalComponent = () => {
   );
 };
 
-export default AnimalComponent;
+export default ArchiveCanvas;
