@@ -7,6 +7,7 @@ const AnimalComponent = () => {
   const [fullScreenIndex, setFullScreenIndex] = useState(null);
   const [isInGridMode, setIsInGridMode] = useState(false);
   const [initialPositions, setInitialPositions] = useState([]);
+  const [currentDraggingIndex, setCurrentDraggingIndex] = useState(null);
 
   useEffect(() => {
     const handleKeyPress = (e) => {
@@ -75,8 +76,11 @@ const AnimalComponent = () => {
   };
 
   const handleMouseDown = (e, index) => {
+    setCurrentDraggingIndex(index);
     e.preventDefault();
     const { clientX, clientY } = e;
+    console.log("clientX", clientX);
+    console.log("clientY", clientY);
     e.persist();
     setImages((prevImages) => {
       const updatedImages = [...prevImages];
@@ -88,7 +92,7 @@ const AnimalComponent = () => {
   };
 
   const handleMouseMove = (e, index) => {
-    if (images[index].isDragging) {
+    if (images[index]?.isDragging) {
       const { clientX, clientY } = e;
       setImages((prevImages) => {
         const updatedImages = [...prevImages];
@@ -167,7 +171,10 @@ const AnimalComponent = () => {
   );
 
   const regularLayout = (
-    <div className="absolute top-0 left-0 w-screen h-screen">
+    <div
+      className="absolute top-0 left-0 w-screen h-screen overflow-ellipsis overflow-hidden"
+      onMouseMove={(e) => handleMouseMove(e, currentDraggingIndex)}
+    >
       {images.map((image, index) => (
         <React.Fragment key={image.id}>
           {fullScreenIndex === index && image.isFullScreen ? (
@@ -194,7 +201,7 @@ const AnimalComponent = () => {
                   : `translate(-50%, -50%)`,
               }}
               onMouseDown={(e) => handleMouseDown(e, index)}
-              onMouseMove={(e) => handleMouseMove(e, index)}
+              // onMouseMove={(e) => handleMouseMove(e, index)}
               onMouseUp={() => handleMouseUp(index)}
               onDoubleClick={() => toggleFullScreen(index)}
             />
