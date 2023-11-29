@@ -46,7 +46,7 @@ export default function Landing() {
         Your browser does not support the video tag.
       </video>
       <div className=" absolute top-0 left-0 w-screen h-2/5 flex flex-row items-center justify-center">
-        <div className="text-center w-full overflow-x-hidden text-[8rem] sm:text-[12rem] md:text-[18rem] lg:text-[18rem] xl:text-[32rem] text-white">
+        <div className="text-center w-full overflow-x-hidden text-[8rem] sm:text-[12rem] md:text-[18rem] lg:text-[18rem] xl:text-[26rem] text-white">
           {title}
         </div>
       </div>
