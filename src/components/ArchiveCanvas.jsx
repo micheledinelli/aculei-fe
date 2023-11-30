@@ -8,6 +8,7 @@ const ArchiveCanvas = () => {
   const [fullScreenIndex, setFullScreenIndex] = useState(null);
   const [isInGridMode, setIsInGridMode] = useState(false);
   const [initialPositions, setInitialPositions] = useState([]);
+  const [currentDraggingIndex, setCurrentDraggingIndex] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -80,8 +81,11 @@ const ArchiveCanvas = () => {
   };
 
   const handleMouseDown = (e, index) => {
+    setCurrentDraggingIndex(index);
     e.preventDefault();
     const { clientX, clientY } = e;
+    console.log("clientX", clientX);
+    console.log("clientY", clientY);
     e.persist();
     setImages((prevImages) => {
       const updatedImages = [...prevImages];
@@ -93,7 +97,7 @@ const ArchiveCanvas = () => {
   };
 
   const handleMouseMove = (e, index) => {
-    if (images[index].isDragging) {
+    if (images[index]?.isDragging) {
       const { clientX, clientY } = e;
       setImages((prevImages) => {
         const updatedImages = [...prevImages];
@@ -183,7 +187,10 @@ const ArchiveCanvas = () => {
   );
 
   const regularLayout = (
-    <div className="absolute top-0 left-0 w-screen h-screen">
+    <div
+      className="absolute top-0 left-0 w-screen h-screen overflow-ellipsis overflow-hidden"
+      onMouseMove={(e) => handleMouseMove(e, currentDraggingIndex)}
+    >
       {images.map((image, index) => (
         <React.Fragment key={image.id}>
           {fullScreenIndex === index && image.isFullScreen ? (
@@ -210,7 +217,7 @@ const ArchiveCanvas = () => {
                   : `translate(-50%, -50%)`,
               }}
               onMouseDown={(e) => handleMouseDown(e, index)}
-              onMouseMove={(e) => handleMouseMove(e, index)}
+              // onMouseMove={(e) => handleMouseMove(e, index)}
               onMouseUp={() => handleMouseUp(index)}
               onDoubleClick={() => toggleFullScreen(index)}
             />
@@ -222,9 +229,53 @@ const ArchiveCanvas = () => {
 
   return (
     <div className="bg-black h-screen text-white">
+      {/* className="w-4/5 h-full m-auto grid grid-cols-3 gap-6 p-10 overflow-y-scroll" */}
+      {/* <div className="absolute top-0 left-0 w-screen h-screen overflow-ellipsis overflow-hidden"></div> */}
       {isInGridMode ? gridLayout : regularLayout}
-
-      {!isInGridMode && !isLoading ? (
+      {/* <div
+        style={{
+          position: isInGridMode ? "" : "absolute",
+          width: isInGridMode ? "80%" : "100vw",
+          height: isInGridMode ? "100%" : "100vh",
+          top: isInGridMode ? "" : "0",
+          left: isInGridMode ? "" : "0",
+          overflow: "hidden",
+          display: isInGridMode ? "grid" : "",
+          gridTemplateColumns: isInGridMode ? "repeat(3, minmax(0, 1fr))" : "",
+          gap: isInGridMode ? "1.5rem" : "",
+          padding: isInGridMode ? "2.5rem" : "",
+        }}
+      >
+        {images.map((image, index) => (
+          <div key={image.id}>
+            {fullScreenIndex === index && image.isFullScreen ? (
+              <img
+                src={image.url}
+                alt=""
+                style={{
+                  position: "fixed",
+                  top: 0,
+                  left: 0,
+                  width: "100vw",
+                  height: "100vh",
+                  objectFit: "contain",
+                  zIndex: 9999,
+                }}
+                onClick={() => toggleFullScreen(index)}
+              ></img>
+            ) : (
+              <div
+                key={image.id}
+                className="relative"
+                onDoubleClick={() => toggleFullScreen(index)}
+              >
+                <img src={image.url} className="w-full h-auto cursor-pointer" />
+              </div>
+            )}
+          </div>
+        ))}
+      </div> */}
+      {!isInGridMode ? (
         <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-center rounded-lg bg-gray-500 bg-opacity-50 flex text-2xl p-3 z-10">
           <button
             className="mx-2 hover:scale-110"
@@ -263,7 +314,6 @@ const ArchiveCanvas = () => {
           </svg>
         </div>
       )}
-
       <div
         className="absolute top-0 right-2 m-4 px-4 py-2 z-10 cursor-pointer"
         onClick={toggleGridMode}
