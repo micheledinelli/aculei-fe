@@ -50,12 +50,12 @@ export default function Landing() {
           {title}
         </div>
       </div>
-      <div className="inline-block absolute w-full bottom-2 inset-x-0 text-white text-3xl text-center">
+      <div className="inline-block absolute w-full bottom-2 inset-x-0 text-white text-3xl text-cente">
         <div className="flex flex-row justify-center items-center">
-          <div className="p-3 m-3 hover:underline hover:underline-offset-8 decoration-4">
+          <div className="p-3 m-3 hover:underline hover:underline-offset-8 decoration-4 mix-blend-difference">
             <NavLink to={aboutPath}>{about}</NavLink>
           </div>
-          <div className="p-3 m-3 hover:underline hover:underline-offset-8 decoration-4">
+          <div className="p-3 m-3 hover:underline hover:underline-offset-8 decoration-4 mix-blend-difference">
             <NavLink to={archivePath}>{archive}</NavLink>
           </div>
         </div>
