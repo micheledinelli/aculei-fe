@@ -280,7 +280,7 @@ const ArchiveCanvas = () => {
         ))}
       </div> */}
       {!isInGridMode ? (
-        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-center rounded-lg bg-gray-500 bg-opacity-50 flex text-2xl p-3 z-10">
+        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-center rounded-lg flex text-2xl p-3 z-10">
           <button className="mx-2 hover:scale-110" onClick={() => spawnImage()}>
             ANIMAL
           </button>
@@ -288,9 +288,9 @@ const ArchiveCanvas = () => {
             MOON
           </button>
           <button className="mx-2 hover:scale-110" onClick={() => spawnImage()}>
-            C° or F°
+            C°
           </button>
-          <div className="mx-2 bg-black p-2 rounded-lg">
+          <div className="mx-2 hover:scale-110">
             <CameraSelector spawnImageFun={spawnImage} />
           </div>
         </div>
