@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import React from "react";
+import CameraSelector from "./CameraSelector";
 // import ImageFullScreen from "./ImageFullScreen";
 import.meta.env.SERVER_URL;
 
@@ -289,23 +290,9 @@ const ArchiveCanvas = () => {
           <button className="mx-2 hover:scale-110" onClick={() => spawnImage()}>
             C° or F°
           </button>
-          {/* <button className="mx-2 hover:scale-110" onClick={() => spawnImage()}>
-            CAM
-          </button> */}
-          <select
-            id="cams"
-            className="mx-2 hover:scale-110 bg-inherit p-1 rounded-md text-center cursor-pointer"
-            onChange={(e) => spawnImage(e.target.value)}
-            onDoubleClick={(e) => spawnImage(e.target.value)}
-          >
-            <option value="1">CAM1</option>
-            <option value="2">CAM2</option>
-            <option value="3">CAM3</option>
-            <option value="4">CAM4</option>
-            <option value="5">CAM5</option>
-            <option value="6">CAM6</option>
-            <option value="7">CAM7</option>
-          </select>
+          <div className="mx-2 bg-black p-2 rounded-lg">
+            <CameraSelector spawnImageFun={spawnImage} />
+          </div>
         </div>
       ) : (
         <></>
