@@ -39,8 +39,6 @@ export default function Landing() {
 
   return (
     <div className="h-screen w-full overflow-x-hidden select-none">
-      {/* <img className="object-cover w-full h-full" src={MainImage}></img> */}
-
       <video className=" w-full h-full object-cover" autoPlay loop muted>
         <source src={Video} type="video/mp4" />
         Your browser does not support the video tag.
@@ -52,10 +50,10 @@ export default function Landing() {
       </div>
       <div className="inline-block absolute w-full bottom-2 inset-x-0 text-white text-3xl text-cente">
         <div className="flex flex-row justify-center items-center">
-          <div className="p-3 m-3 hover:underline hover:underline-offset-8 decoration-4 mix-blend-difference">
+          <div className="p-3 m-3 rounded-md mix-blend-difference hover:bg-black hover:text-white hover:mix-blend-normal">
             <NavLink to={aboutPath}>{about}</NavLink>
           </div>
-          <div className="p-3 m-3 hover:underline hover:underline-offset-8 decoration-4 mix-blend-difference">
+          <div className="p-3 m-3 rounded-md mix-blend-difference hover:bg-black hover:text-white hover:mix-blend-normal">
             <NavLink to={archivePath}>{archive}</NavLink>
           </div>
         </div>

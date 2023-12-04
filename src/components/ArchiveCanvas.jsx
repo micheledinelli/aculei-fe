@@ -10,7 +10,6 @@ const ArchiveCanvas = () => {
   const [isInGridMode, setIsInGridMode] = useState(false);
   const [initialPositions, setInitialPositions] = useState([]);
   const [currentDraggingIndex, setCurrentDraggingIndex] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const handleKeyPress = (e) => {
@@ -27,7 +26,6 @@ const ArchiveCanvas = () => {
   }, [fullScreenIndex]);
 
   const fetchNewImage = async (cam) => {
-    setIsLoading(true);
     try {
       let apiUrl = import.meta.env.VITE_SERVER_URL + "/api/v1/image";
       if (cam !== null && cam !== undefined) {
@@ -57,8 +55,6 @@ const ArchiveCanvas = () => {
       }
     } catch (error) {
       console.error("Error fetching image:", error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -124,7 +120,7 @@ const ArchiveCanvas = () => {
         }
         return {
           ...image,
-          zIndex: 0, // Set zIndex of other images to 0
+          zIndex: 0,
         };
       });
       return updatedImages;
@@ -155,6 +151,10 @@ const ArchiveCanvas = () => {
         return updatedImages;
       });
     }
+  };
+
+  const clearImages = () => {
+    setImages([]);
   };
 
   const gridLayout = (
@@ -233,62 +233,18 @@ const ArchiveCanvas = () => {
 
   return (
     <div className="bg-black h-screen text-white">
-      {/* className="w-4/5 h-full m-auto grid grid-cols-3 gap-6 p-10 overflow-y-scroll" */}
-      {/* <div className="absolute top-0 left-0 w-screen h-screen overflow-ellipsis overflow-hidden"></div> */}
       {isInGridMode ? gridLayout : regularLayout}
-      {/* <div
-        style={{
-          position: isInGridMode ? "" : "absolute",
-          width: isInGridMode ? "80%" : "100vw",
-          height: isInGridMode ? "100%" : "100vh",
-          top: isInGridMode ? "" : "0",
-          left: isInGridMode ? "" : "0",
-          overflow: "hidden",
-          display: isInGridMode ? "grid" : "",
-          gridTemplateColumns: isInGridMode ? "repeat(3, minmax(0, 1fr))" : "",
-          gap: isInGridMode ? "1.5rem" : "",
-          padding: isInGridMode ? "2.5rem" : "",
-        }}
-      >
-        {images.map((image, index) => (
-          <div key={image.id}>
-            {fullScreenIndex === index && image.isFullScreen ? (
-              <img
-                src={image.url}
-                alt=""
-                style={{
-                  position: "fixed",
-                  top: 0,
-                  left: 0,
-                  width: "100vw",
-                  height: "100vh",
-                  objectFit: "contain",
-                  zIndex: 9999,
-                }}
-                onClick={() => toggleFullScreen(index)}
-              ></img>
-            ) : (
-              <div
-                key={image.id}
-                className="relative"
-                onDoubleClick={() => toggleFullScreen(index)}
-              >
-                <img src={image.url} className="w-full h-auto cursor-pointer" />
-              </div>
-            )}
-          </div>
-        ))}
-      </div> */}
+
       {!isInGridMode ? (
         <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-center rounded-lg flex text-2xl p-3 z-10">
           <button className="mx-2 hover:scale-110" onClick={() => spawnImage()}>
             ANIMAL
           </button>
           <button className="mx-2 hover:scale-110" onClick={() => spawnImage()}>
-            MOON
+            C°
           </button>
           <button className="mx-2 hover:scale-110" onClick={() => spawnImage()}>
-            C°
+            DATE
           </button>
           <div className="mx-2 hover:scale-110">
             <CameraSelector spawnImageFun={spawnImage} />
@@ -310,6 +266,19 @@ const ArchiveCanvas = () => {
             <path d="M6 1H1v14h5V1zm9 0h-5v5h5V1zm0 9v5h-5v-5h5zM0 1a1 1 0 011-1h5a1 1 0 011 1v14a1 1 0 01-1 1H1a1 1 0 01-1-1V1zm9 0a1 1 0 011-1h5a1 1 0 011 1v5a1 1 0 01-1 1h-5a1 1 0 01-1-1V1zm1 8a1 1 0 00-1 1v5a1 1 0 001 1h5a1 1 0 001-1v-5a1 1 0 00-1-1h-5z" />
           </svg>
         )}
+      </div>
+
+      <div
+        className="absolute bottom-0 right-2 m-4 p-5-2 z-10 cursor-pointer"
+        onClick={clearImages}
+      >
+        <svg
+          viewBox="0 0 1024 1024"
+          fill="currentColor"
+          className="w-8 h-8 hover:bg-white hover:text-black"
+        >
+          <path d="M899.1 869.6l-53-305.6H864c14.4 0 26-11.6 26-26V346c0-14.4-11.6-26-26-26H618V138c0-14.4-11.6-26-26-26H432c-14.4 0-26 11.6-26 26v182H160c-14.4 0-26 11.6-26 26v192c0 14.4 11.6 26 26 26h17.9l-53 305.6c-.3 1.5-.4 3-.4 4.4 0 14.4 11.6 26 26 26h723c1.5 0 3-.1 4.4-.4 14.2-2.4 23.7-15.9 21.2-30zM204 390h272V182h72v208h272v104H204V390zm468 440V674c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8v156H416V674c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8v156H202.8l45.1-260H776l45.1 260H672z" />
+        </svg>
       </div>
     </div>
   );
