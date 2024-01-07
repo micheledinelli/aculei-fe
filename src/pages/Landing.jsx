@@ -8,6 +8,7 @@ export default function Landing() {
   const [isMobile, setIsMobile] = useState(false);
   const [isSafari, setIsSafari] = useState(false);
   const [videoURL, setVideoURL] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   const title = "ACULEI";
   const about = "ABOUT";
@@ -50,6 +51,7 @@ export default function Landing() {
       .then((blob) => {
         const url = URL.createObjectURL(blob);
         setVideoURL(url);
+        setIsLoading(false);
       })
       .catch((error) => {
         console.error("There was a problem fetching the video:", error);
@@ -75,12 +77,17 @@ export default function Landing() {
   return (
     // Showing the fetched video, if an error occurs than we fallback to the existing one
     <div className="h-screen w-full overflow-x-hidden select-none">
-      {!videoURL && (
+      {isLoading && ( // Show spinner while video is loading
+        <div className="h-screen flex items-center justify-center">
+          <p>Loading</p>
+        </div>
+      )}
+      {!isLoading && !videoURL && (
         <video className=" w-full h-full object-cover" autoPlay loop muted>
           <source src={Video} type="video/mp4" />
         </video>
       )}
-      {videoURL && (
+      {!isLoading && videoURL && (
         <video className="w-full h-full object-cover" autoPlay loop>
           <source src={videoURL} type="video/webm" />
           Your browser does not support the video tag.
