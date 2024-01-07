@@ -38,7 +38,7 @@ export default function Landing() {
   }, []);
 
   useEffect(() => {
-    let apiUrl = import.meta.env.VITE_SERVER_URL + "/api/v1/video";
+    let apiUrl = import.meta.env.VITE_SERVER_URL + "api/v1/video";
 
     fetch(apiUrl)
       .then((response) => {

@@ -27,7 +27,7 @@ const ArchiveCanvas = () => {
 
   const fetchNewImage = async (cam) => {
     try {
-      let apiUrl = import.meta.env.VITE_SERVER_URL + "/api/v1/image";
+      let apiUrl = import.meta.env.VITE_SERVER_URL + "api/v1/image";
       if (cam !== null && cam !== undefined) {
         apiUrl += `?cam=${cam}`;
       }
