@@ -6,6 +6,8 @@ import Video from "../assets/video.mp4";
 
 export default function Landing() {
   const [isMobile, setIsMobile] = useState(false);
+  const [isSafari, setIsSafari] = useState(false);
+  const [videoURL, setVideoURL] = useState("");
 
   const title = "ACULEI";
   const about = "ABOUT";
@@ -18,15 +20,40 @@ export default function Landing() {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 640);
     };
-
-    // Initial check on component mount
     handleResize();
-
-    // Event listener for window resize
     window.addEventListener("resize", handleResize);
-
-    // Cleanup on component unmount
     return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    setIsSafari(
+      /constructor/i.test(window.HTMLElement) ||
+        (function (p) {
+          return p.toString() === "[object SafariRemoteNotification]";
+        })(
+          !window["safari"] ||
+            (typeof safari !== "undefined" && safari.pushNotification)
+        )
+    );
+  }, []);
+
+  useEffect(() => {
+    let apiUrl = import.meta.env.VITE_SERVER_URL + "/api/v1/video";
+
+    fetch(apiUrl)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.blob();
+      })
+      .then((blob) => {
+        const url = URL.createObjectURL(blob);
+        setVideoURL(url);
+      })
+      .catch((error) => {
+        console.error("There was a problem fetching the video:", error);
+      });
   }, []);
 
   if (isMobile) {
@@ -37,13 +64,29 @@ export default function Landing() {
     );
   }
 
+  if (isSafari) {
+    return (
+      <div className="h-screen flex items-center justify-center text-center">
+        <p>Please visit us from another browser for the best experience.</p>
+      </div>
+    );
+  }
+
   return (
+    // Showing the fetched video, if an error occurs than we fallback to the existing one
     <div className="h-screen w-full overflow-x-hidden select-none">
-      <video className=" w-full h-full object-cover" autoPlay loop muted>
-        <source src={Video} type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
-      <div className=" absolute top-0 left-0 w-screen h-2/5 flex flex-row items-center justify-center">
+      {!videoURL && (
+        <video className=" w-full h-full object-cover" autoPlay loop muted>
+          <source src={Video} type="video/mp4" />
+        </video>
+      )}
+      {videoURL && (
+        <video className="w-full h-full object-cover" autoPlay loop>
+          <source src={videoURL} type="video/webm" />
+          Your browser does not support the video tag.
+        </video>
+      )}
+      <div className="absolute top-0 left-0 w-screen h-2/5 flex flex-row items-center justify-center">
         <div className="text-center w-full overflow-x-hidden text-[8rem] sm:text-[12rem] md:text-[18rem] lg:text-[18rem] xl:text-[26rem] text-white">
           {title}
         </div>
