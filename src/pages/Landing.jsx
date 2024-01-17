@@ -83,7 +83,7 @@ export default function Landing() {
         </div>
       )}
       {!isLoading && !videoURL && (
-        <video className=" w-full h-full object-cover" autoPlay loop muted>
+        <video className="w-full h-full object-cover" autoPlay loop muted>
           <source src={Video} type="video/mp4" />
         </video>
       )}
