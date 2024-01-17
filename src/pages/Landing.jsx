@@ -76,7 +76,7 @@ export default function Landing() {
 
   return (
     // Showing the fetched video, if an error occurs than we fallback to the existing one
-    <div className="h-screen w-full overflow-x-hidden select-none">
+    <div className="h-screen w-full overflow-x-hidden select-none font-noto">
       {isLoading && ( // Show spinner while video is loading
         <div className="h-screen flex items-center justify-center">
           <p>Loading</p>
@@ -100,11 +100,25 @@ export default function Landing() {
       </div>
       <div className="inline-block absolute w-full bottom-2 inset-x-0 text-white text-3xl text-cente">
         <div className="flex flex-row justify-center items-center">
-          <div className="p-3 m-3 rounded-md mix-blend-difference hover:bg-black hover:text-white hover:mix-blend-normal">
-            <NavLink to={aboutPath}>{about}</NavLink>
+          <div className="p-3 m-3 rounded-md">
+            <NavLink to={aboutPath}>
+              <button className="btn relative inline-flex items-center justify-start overflow-hidden transition-all bg-black rounded-md hover:bg-black group">
+                <span className="w-0 h-0 rounded bg-white absolute bottom-0 right-0 ease-out duration-300 transition-all group-hover:w-full group-hover:h-full -z-1"></span>
+                <span className="w-full text-white transition-colors duration-300 ease-in-out group-hover:text-black z-10 p-3">
+                  {about}
+                </span>
+              </button>
+            </NavLink>
           </div>
-          <div className="p-3 m-3 rounded-md mix-blend-difference hover:bg-black hover:text-white hover:mix-blend-normal">
-            <NavLink to={archivePath}>{archive}</NavLink>
+          <div className="p-3 m-3 rounded-md">
+            <NavLink to={archivePath}>
+              <button className="btn relative inline-flex items-center justify-start overflow-hidden transition-all bg-black rounded-md hover:bg-black group">
+                <span className="w-0 h-0 rounded bg-white absolute bottom-0 right-0 ease-out duration-300 transition-all group-hover:w-full group-hover:h-full -z-1"></span>
+                <span className="w-full text-white transition-colors duration-300 ease-in-out group-hover:text-black z-10 p-3">
+                  {archive}
+                </span>
+              </button>
+            </NavLink>
           </div>
         </div>
       </div>

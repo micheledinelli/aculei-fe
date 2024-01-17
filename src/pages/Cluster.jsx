@@ -52,23 +52,28 @@ export default function Cluster() {
         onMouseOut={replay}
       ></h1>
       <div
-        className="text-6xl fixed top-10 right-10 z-10 cursor-pointer"
+        className="text-6xl fixed top-10 right-10 z-10"
         onClick={() => handleCrossClick()}
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth="1.5"
-          stroke="currentColor"
-          className="w-14 h-14"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-          />
-        </svg>
+        <button className="btn relative inline-flex items-center justify-start overflow-hidden transition-all group">
+          <span className="w-0 h-0 rounded bg-white absolute bottom-0 right-0 ease-out duration-300 transition-all group-hover:w-full group-hover:h-full -z-1"></span>
+          <span className="w-full text-white transition-colors duration-300 ease-in-out group-hover:text-black z-10">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="w-14 h-14"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              />
+            </svg>
+          </span>
+        </button>
       </div>
 
       <BarChart clusterData={details} clusterId={id} />

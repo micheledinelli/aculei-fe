@@ -5,7 +5,7 @@ import { useScramble } from "use-scramble";
 export default function AculeiTitle() {
   const { ref, replay } = useScramble({
     text: "ACULEI",
-    speed: 0.6,
+    speed: 0.3,
     tick: 1,
     step: 1,
     scramble: 4,
