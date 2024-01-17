@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useScramble } from "use-scramble";
 import { useNavigate, useParams } from "react-router-dom";
-import ScrambleTest from "../components/ScrambleText";
+import ScrambleText from "../components/ScrambleText";
 import AculeiTitle from "../components/AculeiTitle";
 
 export default function ArchiveDetail() {
@@ -146,7 +146,7 @@ export default function ArchiveDetail() {
         {Object.entries(details).map(([key, value]) => (
           <p key={key} className="text-s font-mono">
             <span className="font-bold">{key}:</span>{" "}
-            {<ScrambleTest text={String(value)} />}
+            {<ScrambleText text={String(value)} />}
           </p>
         ))}
       </div>
@@ -170,7 +170,7 @@ export default function ArchiveDetail() {
             className="underline underline-offset-4 cursor-pointer"
             onClick={() => handleClusterClick(details.cluster)}
           >
-            cluster
+            <ScrambleText text={"cluster"} />
           </span>
         </p>
       )}

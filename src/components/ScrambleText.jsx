@@ -1,7 +1,7 @@
 import React from "react";
 import { useScramble } from "use-scramble";
 
-export default function ScrambleTest({ text }) {
+export default function ScrambleText({ text }) {
   const { ref, replay } = useScramble({
     text: text,
     speed: 0.6,
@@ -9,7 +9,12 @@ export default function ScrambleTest({ text }) {
     step: 1,
     scramble: 4,
     seed: 0,
+    overdrive: false,
   });
 
-  return <span ref={ref}>ca</span>;
+  return (
+    <span ref={ref} onMouseOver={replay} onMouseOut={replay}>
+      ca
+    </span>
+  );
 }
