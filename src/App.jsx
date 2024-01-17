@@ -9,6 +9,7 @@ import Landing from "./pages/Landing";
 import About from "./pages/About";
 import ArchiveDetail from "./pages/ArchiveDetail";
 import Archive from "./pages/Archive";
+import Cluster from "./pages/Cluster";
 
 const router = createBrowserRouter([{ path: "*", Component: Root }]);
 
@@ -23,6 +24,7 @@ function Root() {
       <Route path="/about" element={<About />} />
       <Route path="/archive" element={<Archive />} />
       <Route path="/archive/:id" element={<ArchiveDetail />} />
+      <Route path="/clusters/:id" element={<Cluster />} />
     </Routes>
   );
 }

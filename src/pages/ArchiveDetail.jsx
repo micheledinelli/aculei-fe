@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useScramble } from "use-scramble";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ScrambleTest from "../components/ScrambleText";
+import AculeiTitle from "../components/AculeiTitle";
 
 export default function ArchiveDetail() {
   const { state } = useLocation();
-  const image = state ? state.image : null;
+  const { id } = useParams();
+  const [image, setImage] = useState();
 
   const [details, setDetails] = useState({});
 
@@ -25,8 +27,12 @@ export default function ArchiveDetail() {
 
   const handleImageClick = (image) => {
     setImages([]);
-    scrollToSection("prova");
     navigate(`/archive/${image.sha256}`, { state: { image } });
+  };
+
+  const handleClusterClick = (cluster) => {
+    setImages([]);
+    navigate(`/clusters/${cluster}`, { state: { cluster } });
   };
 
   const fetchDetails = async (sha256) => {
@@ -54,7 +60,10 @@ export default function ArchiveDetail() {
   const fetchCluster = async (cluster) => {
     try {
       let apiUrl =
-        import.meta.env.VITE_SERVER_URL + "api/v1/clusters/" + cluster;
+        import.meta.env.VITE_SERVER_URL +
+        "api/v1/clusters/" +
+        cluster +
+        "/image";
 
       const response = await fetch(apiUrl);
 
@@ -78,28 +87,42 @@ export default function ArchiveDetail() {
     }
   };
 
-  useEffect(() => {
-    fetchDetails(image.sha256);
-  }, [image]);
+  const fetchImage = async (id) => {
+    try {
+      let apiUrl = import.meta.env.VITE_SERVER_URL + "api/v1/image/" + id;
 
-  const scrollToSection = (id, e) => {
-    const element = document.querySelector(id);
-    if (element) window.scrollTo(0, element.offsetTop);
+      const response = await fetch(apiUrl);
+
+      if (response.ok) {
+        const imageUrl = URL.createObjectURL(await response.blob());
+        const sha256Value = response.headers.get("x-sha256");
+
+        const newImage = {
+          id: Date.now(),
+          url: imageUrl,
+          zIndex: 0,
+          sha256: sha256Value,
+        };
+        setImage(newImage);
+      } else {
+        console.error("Failed to fetch image");
+      }
+    } catch (error) {
+      console.error("Error fetching image:", error);
+    }
   };
+
+  useEffect(() => {
+    fetchImage(id);
+    fetchDetails(id);
+  }, [id]);
 
   return (
     <div
       className="bg-black w-full text-white font-noto overflow-y-scroll"
       id="prova"
     >
-      <Link to={"/archive"}>
-        <h1
-          className="text-6xl fixed top-10 left-10 z-20"
-          ref={ref}
-          onMouseOver={replay}
-          onMouseOut={replay}
-        ></h1>
-      </Link>
+      <AculeiTitle />
       <Link to={"/archive"}>
         <div className="text-6xl fixed top-10 right-10 z-10">
           <svg
@@ -130,27 +153,29 @@ export default function ArchiveDetail() {
 
       <div className="flex items-center justify-center h-screen w-full">
         <div className="w-1/2 h-1/2">
-          <img
-            src={image.url}
-            alt="Image Detail"
-            className="rounded-md w-full h-full object-contain"
-          />
+          {image && (
+            <img
+              src={image.url}
+              alt="Image Detail"
+              className="rounded-md w-full h-full object-contain"
+            />
+          )}
         </div>
       </div>
 
       {details && (
         <p className="font-mono text-2xl text-center">
           In the same{" "}
-          <Link
-            to={"/cluster/" + details.cluster}
-            className="underline underline-offset-4"
+          <span
+            className="underline underline-offset-4 cursor-pointer"
+            onClick={() => handleClusterClick(details.cluster)}
           >
             cluster
-          </Link>
+          </span>
         </p>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 place-items-center mx-10 my-28">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 place-items-center mx-10 my-64">
         {images.map((image, index) => (
           <div key={index}>
             <img

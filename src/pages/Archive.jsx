@@ -27,7 +27,7 @@ export default function Archive() {
   };
 
   const handleImageClick = (image) => {
-    navigate(`/archive/${image.sha256}`, { state: { image } });
+    navigate(`/archive/${image.sha256}`);
   };
 
   const fetchNewImage = async () => {
