@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useScramble } from "use-scramble";
+import { useNavigate } from "react-router-dom";
 import ScrambleTest from "../components/ScrambleText";
 
 export default function ArchiveDetail() {
   const { state } = useLocation();
-  const [details, setDetails] = useState({});
   const image = state ? state.image : null;
+
+  const [details, setDetails] = useState({});
+
+  const [images, setImages] = useState([]);
+
+  const navigate = useNavigate();
 
   const { ref, replay } = useScramble({
     text: "ACULEI",
@@ -16,6 +22,12 @@ export default function ArchiveDetail() {
     scramble: 4,
     seed: 0,
   });
+
+  const handleImageClick = (image) => {
+    setImages([]);
+    scrollToSection("prova");
+    navigate(`/archive/${image.sha256}`, { state: { image } });
+  };
 
   const fetchDetails = async (sha256) => {
     try {
@@ -27,6 +39,10 @@ export default function ArchiveDetail() {
       if (response.ok) {
         const detailsData = await response.json();
         setDetails(detailsData);
+
+        for (let i = 0; i < 3; i++) {
+          fetchCluster(detailsData.cluster);
+        }
       } else {
         console.error("Failed to fetch image details");
       }
@@ -35,12 +51,47 @@ export default function ArchiveDetail() {
     }
   };
 
+  const fetchCluster = async (cluster) => {
+    try {
+      let apiUrl =
+        import.meta.env.VITE_SERVER_URL + "api/v1/clusters/" + cluster;
+
+      const response = await fetch(apiUrl);
+
+      if (response.ok) {
+        const imageUrl = URL.createObjectURL(await response.blob());
+        const sha256Value = response.headers.get("x-sha256");
+
+        const newImage = {
+          id: Date.now(),
+          url: imageUrl,
+          zIndex: 0,
+          sha256: sha256Value,
+        };
+
+        setImages((prevImages) => [...prevImages, newImage]);
+      } else {
+        console.error("Failed to fetch image");
+      }
+    } catch (error) {
+      console.error("Error fetching image:", error);
+    }
+  };
+
   useEffect(() => {
     fetchDetails(image.sha256);
-  }, []);
+  }, [image]);
+
+  const scrollToSection = (id, e) => {
+    const element = document.querySelector(id);
+    if (element) window.scrollTo(0, element.offsetTop);
+  };
 
   return (
-    <div className="bg-black h-screen w-full text-white font-noto overflow-y-scroll">
+    <div
+      className="bg-black w-full text-white font-noto overflow-y-scroll"
+      id="prova"
+    >
       <Link to={"/archive"}>
         <h1
           className="text-6xl fixed top-10 left-10 z-20"
@@ -57,7 +108,7 @@ export default function ArchiveDetail() {
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            class="w-14 h-14"
+            className="w-14 h-14"
           >
             <path
               strokeLinecap="round"
@@ -68,7 +119,7 @@ export default function ArchiveDetail() {
         </div>
       </Link>
 
-      <div className="fixed top-1/3 left-10 flex flex-col text-left justify-start items-start">
+      <div className="fixed top-1/3 left-10 z-20">
         {Object.entries(details).map(([key, value]) => (
           <p key={key} className="text-s font-mono">
             <span className="font-bold">{key}:</span>{" "}
@@ -85,6 +136,31 @@ export default function ArchiveDetail() {
             className="rounded-md w-full h-full object-contain"
           />
         </div>
+      </div>
+
+      {details && (
+        <p className="font-mono text-2xl text-center">
+          In the same{" "}
+          <Link
+            to={"/cluster/" + details.cluster}
+            className="underline underline-offset-4"
+          >
+            cluster
+          </Link>
+        </p>
+      )}
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 place-items-center mx-10 my-28">
+        {images.map((image, index) => (
+          <div key={index}>
+            <img
+              src={image.url}
+              alt={`Image ${index}`}
+              className="w-full object-cover rounded-md cursor-pointer"
+              onClick={() => handleImageClick(image)}
+            />
+          </div>
+        ))}
       </div>
     </div>
   );
