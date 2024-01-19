@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import Video from "../assets/video.mp4";
-import LoadingBoar from "../components/LoadingBoar";
+import LoadingGif from "../components/LoadingGif";
 
 export default function Landing() {
   const [isMobile, setIsMobile] = useState(false);
@@ -52,12 +52,12 @@ export default function Landing() {
       .then((blob) => {
         const url = URL.createObjectURL(blob);
         setVideoURL(url);
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 3000);
       })
       .catch((error) => {
         console.error("There was a problem fetching the video:", error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }, []);
 
@@ -78,7 +78,7 @@ export default function Landing() {
   }
 
   if (isLoading) {
-    return <LoadingBoar />;
+    return <LoadingGif />;
   }
 
   return (

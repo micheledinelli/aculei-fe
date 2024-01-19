@@ -5,7 +5,7 @@ import ScrambleText from "../components/ScrambleText";
 import AculeiTitle from "../components/AculeiTitle";
 import ZoomableImage from "../components/ZoomableImage";
 import CloseSvg from "../components/CloseSvg";
-import LoadingBoar from "../components/LoadingBoar";
+import LoadingGif from "../components/LoadingGif";
 
 export default function ArchiveDetail() {
   const { id } = useParams();
@@ -128,7 +128,7 @@ export default function ArchiveDetail() {
   }, [id]);
 
   if (loadingImage) {
-    return <LoadingBoar />;
+    return <LoadingGif />;
   }
   return (
     <div className="bg-black w-full h-full text-white font-noto overflow-x-hidden overflow-y no-scroll">

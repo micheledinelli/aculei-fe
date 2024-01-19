@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useScramble } from "use-scramble";
-import LoadingBoar from "../components/LoadingBoar";
+import LoadingGif from "../components/LoadingGif";
 import.meta.env.SERVER_URL;
 
 export default function Archive() {
@@ -76,7 +76,7 @@ export default function Archive() {
   }, []);
 
   if (loadingImages) {
-    return <LoadingBoar />;
+    return <LoadingGif />;
   }
   return (
     <div className="bg-black h-screen w-full text-white font-noto overflow-y-scroll">
