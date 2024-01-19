@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useScramble } from "use-scramble";
 import { useNavigate, useParams } from "react-router-dom";
@@ -26,6 +26,12 @@ export default function ArchiveDetail() {
     scramble: 4,
     seed: 0,
   });
+  const location = useLocation();
+
+  useEffect(() => {
+    setImages([]);
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
   const handleImageClick = (image) => {
     setImages([]);
