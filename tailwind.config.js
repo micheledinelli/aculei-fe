@@ -8,5 +8,18 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      const newUtilities = {
+        ".no-scroll": {
+          "scrollbar-width": "none" /* Firefox */,
+          "-ms-overflow-style": "none" /* Internet Explorer 10+ */,
+        },
+        ".no-scroll::-webkit-scrollbar": {
+          display: "none" /* Safari and Chrome */,
+        },
+      };
+      addUtilities(newUtilities);
+    },
+  ],
 };

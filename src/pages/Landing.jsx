@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import Video from "../assets/video.mp4";
+import LoadingBoar from "../components/LoadingBoar";
 
 export default function Landing() {
   const [isMobile, setIsMobile] = useState(false);
@@ -51,7 +52,9 @@ export default function Landing() {
       .then((blob) => {
         const url = URL.createObjectURL(blob);
         setVideoURL(url);
-        setIsLoading(false);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 3000);
       })
       .catch((error) => {
         console.error("There was a problem fetching the video:", error);
@@ -78,9 +81,10 @@ export default function Landing() {
     // Showing the fetched video, if an error occurs than we fallback to the existing one
     <div className="h-screen w-full overflow-x-hidden select-none font-noto">
       {isLoading && ( // Show spinner while video is loading
-        <div className="h-screen flex items-center justify-center">
-          <p>Loading</p>
-        </div>
+        // <div className="h-screen flex items-center justify-center">
+        //   <p>Loading</p>
+        // </div>
+        <LoadingBoar />
       )}
       {!isLoading && !videoURL && (
         <video className="w-full h-full object-cover" autoPlay loop muted>

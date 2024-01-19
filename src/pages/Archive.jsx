@@ -1,12 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useScramble } from "use-scramble";
+import LoadingBoar from "../components/LoadingBoar";
 import.meta.env.SERVER_URL;
 
 export default function Archive() {
   const [images, setImages] = useState([]);
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [loadingImages, setLoadingImages] = useState(true);
   const navigate = useNavigate();
 
   const { ref, replay } = useScramble({
@@ -56,6 +58,7 @@ export default function Archive() {
   };
 
   const fetchMultipleImages = async () => {
+    setLoadingImages(true);
     try {
       const totalImagesToFetch = 21;
       for (let i = 0; i < totalImagesToFetch; i++) {
@@ -67,9 +70,13 @@ export default function Archive() {
   };
 
   useEffect(() => {
-    fetchMultipleImages();
+    fetchMultipleImages().then(() => {
+      setLoadingImages(false);
+    });
   }, []);
-
+  if (loadingImages) {
+    return <LoadingBoar />;
+  }
   return (
     <div className="bg-black h-screen w-full text-white font-noto overflow-y-scroll">
       <Link to={"/"}>
