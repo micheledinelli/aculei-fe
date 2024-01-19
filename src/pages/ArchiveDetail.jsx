@@ -1,31 +1,21 @@
-import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { useScramble } from "use-scramble";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+
 import ScrambleText from "../components/ScrambleText";
 import AculeiTitle from "../components/AculeiTitle";
 import ZoomableImage from "../components/ZoomableImage";
-import { useInView } from "react-intersection-observer";
 
 export default function ArchiveDetail() {
-  const { state } = useLocation();
   const { id } = useParams();
   const [image, setImage] = useState();
 
   const [details, setDetails] = useState({});
 
   const [images, setImages] = useState([]);
+  const [hoveredIndex, setHoveredIndex] = useState(null);
 
   const navigate = useNavigate();
 
-  const { ref, replay } = useScramble({
-    text: "ACULEI",
-    speed: 0.6,
-    tick: 1,
-    step: 1,
-    scramble: 4,
-    seed: 0,
-  });
   const location = useLocation();
 
   useEffect(() => {
@@ -35,18 +25,26 @@ export default function ArchiveDetail() {
 
   const handleImageClick = (image) => {
     setImages([]);
-    navigate(`/archive/${image.sha256}`, { state: { image } });
+    navigate(`/archive/${image.sha256}`);
   };
 
   const handleClusterClick = (cluster) => {
     setImages([]);
-    navigate(`/clusters/${cluster}`, { state: { cluster } });
+    navigate(`/clusters/${cluster}`);
+  };
+
+  const handleHover = (index) => {
+    setHoveredIndex(index);
+  };
+
+  const handleLeave = () => {
+    setHoveredIndex(null);
   };
 
   const fetchDetails = async (sha256) => {
     try {
       let apiUrl =
-        import.meta.env.VITE_SERVER_URL + "api/v1/image-detail/" + sha256;
+        import.meta.env.VITE_SERVER_URL + "api/v1/image/" + sha256 + "/details";
 
       const response = await fetch(apiUrl);
 
@@ -188,9 +186,16 @@ export default function ArchiveDetail() {
         </p>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 place-items-center mx-10 my-10 md:my-32">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 place-items-center mx-10 my-10 md:my-64">
         {images.map((image, index) => (
-          <div key={index}>
+          <div
+            key={index}
+            className={`relative transition-transform transform ${
+              hoveredIndex === index ? "scale-110" : "scale-100"
+            } ${hoveredIndex === index ? "z-10" : "z-0"}`}
+            onMouseEnter={() => handleHover(index)}
+            onMouseLeave={handleLeave}
+          >
             <img
               src={image.url}
               alt={`Image ${index}`}
