@@ -74,6 +74,7 @@ export default function Archive() {
       setLoadingImages(false);
     });
   }, []);
+
   if (loadingImages) {
     return <LoadingBoar />;
   }

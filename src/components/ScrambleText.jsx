@@ -1,8 +1,8 @@
 import React from "react";
 import { useScramble } from "use-scramble";
 
-export default function ScrambleText({ text }) {
-  const { ref } = useScramble({
+export default function ScrambleText({ text, keepmovin }) {
+  const { ref, replay } = useScramble({
     text: text,
     speed: 0.3,
     tick: 1,
@@ -11,6 +11,14 @@ export default function ScrambleText({ text }) {
     seed: 0,
     overdrive: true,
   });
+
+  if (keepmovin) {
+    return (
+      <span ref={ref} onMouseOver={replay} onMouseOut={replay}>
+        {text}
+      </span>
+    );
+  }
 
   return <span ref={ref}>{text}</span>;
 }

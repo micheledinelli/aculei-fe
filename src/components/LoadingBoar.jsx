@@ -10,7 +10,7 @@ function LoadingBoar() {
         alt="Loading"
       />
       <div className="font-noto text-3xl absolute z-50">
-        <ScrambleText text="Loading..." />
+        <ScrambleText text="Loading" keepmovin={true} />
       </div>
     </div>
   );

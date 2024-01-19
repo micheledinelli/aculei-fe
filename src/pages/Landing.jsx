@@ -77,15 +77,13 @@ export default function Landing() {
     );
   }
 
+  if (isLoading) {
+    return <LoadingBoar />;
+  }
+
   return (
     // Showing the fetched video, if an error occurs than we fallback to the existing one
     <div className="h-screen w-full overflow-x-hidden select-none font-noto">
-      {isLoading && ( // Show spinner while video is loading
-        // <div className="h-screen flex items-center justify-center">
-        //   <p>Loading</p>
-        // </div>
-        <LoadingBoar />
-      )}
       {!isLoading && !videoURL && (
         <video className="w-full h-full object-cover" autoPlay loop muted>
           <source src={Video} type="video/mp4" />
