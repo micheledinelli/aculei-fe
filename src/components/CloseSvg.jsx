@@ -1,6 +1,6 @@
 export default function CloseSvg() {
   return (
-    <div className="text-6xl fixed top-10 right-10 z-10">
+    <div className="text-6xl fixed top-10 right-10 z-10 cursor-pointer">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill=""
