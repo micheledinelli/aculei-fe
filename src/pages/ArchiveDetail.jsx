@@ -173,7 +173,7 @@ export default function ArchiveDetail() {
         </p>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 place-items-center mx-10 my-10 md:my-64">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 place-items-center mx-10 my-10 md:my-32">
         {images.map((image, index) => (
           <div
             key={index}
