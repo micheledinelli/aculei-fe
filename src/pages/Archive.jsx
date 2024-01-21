@@ -2,7 +2,9 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useScramble } from "use-scramble";
+import InfiniteScroll from "react-infinite-scroll-component";
 import LoadingGif from "../components/LoadingGif";
+import AculeiLoader from "../components/AculeiLoader";
 import.meta.env.SERVER_URL;
 
 export default function Archive() {
@@ -75,11 +77,25 @@ export default function Archive() {
     });
   }, []);
 
+  const fetchMore = async () => {
+    setTimeout(async () => {
+      try {
+        const totalImagesToFetch = 21;
+        for (let i = 0; i < totalImagesToFetch; i++) {
+          await fetchNewImage(null);
+        }
+      } catch (error) {
+        console.error("Error fetching multiple images:", error);
+      }
+    }, 3000);
+  };
+
   if (loadingImages) {
     return <LoadingGif />;
   }
+
   return (
-    <div className="bg-black h-screen w-full text-white font-noto overflow-y-scroll">
+    <div className="bg-black h-screen w-full text-white font-noto">
       <Link to={"/"}>
         <h1
           className="text-6xl fixed top-10 left-10 z-20"
@@ -88,25 +104,32 @@ export default function Archive() {
           onMouseOut={replay}
         ></h1>
       </Link>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 place-items-center mx-5">
-        {images.map((image, index) => (
-          <div
-            key={index}
-            className={`relative transition-transform transform ${
-              hoveredIndex === index ? "scale-110" : "scale-100"
-            } ${hoveredIndex === index ? "z-10" : "z-0"}`}
-            onMouseEnter={() => handleHover(index)}
-            onMouseLeave={handleLeave}
-          >
-            <img
-              src={image.url}
-              alt={`Image ${index}`}
-              className="w-full object-cover rounded-md cursor-pointer"
-              onClick={() => handleImageClick(image)}
-            />
-          </div>
-        ))}
-      </div>
+      <InfiniteScroll
+        dataLength={images.length}
+        next={fetchMore}
+        hasMore={true}
+        loader={<AculeiLoader />}
+      >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 place-items-center mx-5">
+          {images.map((image, index) => (
+            <div
+              key={index}
+              className={`relative transition-transform transform ${
+                hoveredIndex === index ? "scale-110" : "scale-100"
+              } ${hoveredIndex === index ? "z-10" : "z-0"}`}
+              onMouseEnter={() => handleHover(index)}
+              onMouseLeave={handleLeave}
+            >
+              <img
+                src={image.url}
+                alt={`Image ${index}`}
+                className="w-full object-cover rounded-md cursor-pointer"
+                onClick={() => handleImageClick(image)}
+              />
+            </div>
+          ))}
+        </div>
+      </InfiniteScroll>
     </div>
   );
 }
