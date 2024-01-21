@@ -63,7 +63,7 @@ export default function Landing() {
 
   if (isMobile) {
     return (
-      <div className="h-screen flex items-center justify-center text-center">
+      <div className="h-screen flex items-center justify-center text-center text-white">
         <p>Please visit us from a desktop for the best experience.</p>
       </div>
     );
