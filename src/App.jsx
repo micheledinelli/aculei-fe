@@ -10,11 +10,17 @@ import About from "./pages/About";
 import ArchiveDetail from "./pages/ArchiveDetail";
 import Archive from "./pages/Archive";
 import Cluster from "./pages/Cluster";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 
 const router = createBrowserRouter([{ path: "*", Component: Root }]);
 
 export default function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <Provider store={store}>
+      <RouterProvider router={router} />;
+    </Provider>
+  );
 }
 
 function Root() {

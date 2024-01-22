@@ -1,9 +1,8 @@
 import React from "react";
 import ScrambleText from "./ScrambleText";
 import wildboar from "../assets/wild-boar.gif";
-import porcuspine from "../assets/porcuspine.gif";
 
-function LoadingGif() {
+function LoadingGif({ preference }) {
   // Array of gif paths
   // const gifPaths = [wildboar, porcuspine];
 
@@ -18,7 +17,7 @@ function LoadingGif() {
       className={`fixed top-0 left-0 h-full w-full overflow-hidden flex items-center justify-center z-50`}
     >
       <img
-        src={wildboar}
+        src={preference ? preference : wildboar}
         className="w-full h-full object-cover absolute"
         alt="Loading"
       />

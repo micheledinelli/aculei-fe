@@ -1,17 +1,24 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+
+import { useDispatch, useSelector } from "react-redux";
+import { addImage } from "../redux/imageActions";
+
 import { useScramble } from "use-scramble";
 import InfiniteScroll from "react-infinite-scroll-component";
 import LoadingGif from "../components/LoadingGif";
 import AculeiLoader from "../components/AculeiLoader";
+import porcuspine from "../assets/porcuspine.gif";
 import.meta.env.SERVER_URL;
 
 export default function Archive() {
-  const [images, setImages] = useState([]);
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [loadingImages, setLoadingImages] = useState(true);
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+  const imagesState = useSelector((state) => state.images);
 
   const { ref, replay } = useScramble({
     text: "ACULEI",
@@ -50,7 +57,7 @@ export default function Archive() {
           zIndex: 0,
           sha256: sha256Value,
         };
-        setImages((prevImages) => [...prevImages, newImage]);
+        dispatch(addImage(newImage));
       } else {
         console.error("Failed to fetch image");
       }
@@ -60,14 +67,17 @@ export default function Archive() {
   };
 
   const fetchMultipleImages = async () => {
-    setLoadingImages(true);
-    try {
-      const totalImagesToFetch = 21;
-      for (let i = 0; i < totalImagesToFetch; i++) {
-        await fetchNewImage(null);
+    // fetching the images only if the images array is empty
+    if (Array.isArray(imagesState.images) && imagesState.images.length === 0) {
+      setLoadingImages(true);
+      try {
+        const totalImagesToFetch = 21;
+        for (let i = 0; i < totalImagesToFetch; i++) {
+          await fetchNewImage(null);
+        }
+      } catch (error) {
+        console.error("Error fetching multiple images:", error);
       }
-    } catch (error) {
-      console.error("Error fetching multiple images:", error);
     }
   };
 
@@ -78,20 +88,18 @@ export default function Archive() {
   }, []);
 
   const fetchMore = async () => {
-    setTimeout(async () => {
-      try {
-        const totalImagesToFetch = 21;
-        for (let i = 0; i < totalImagesToFetch; i++) {
-          await fetchNewImage(null);
-        }
-      } catch (error) {
-        console.error("Error fetching multiple images:", error);
+    try {
+      const totalImagesToFetch = 21;
+      for (let i = 0; i < totalImagesToFetch; i++) {
+        await fetchNewImage(null);
       }
-    }, 3000);
+    } catch (error) {
+      console.error("Error fetching multiple images:", error);
+    }
   };
 
   if (loadingImages) {
-    return <LoadingGif />;
+    return <LoadingGif preference={porcuspine} />;
   }
 
   return (
@@ -105,13 +113,13 @@ export default function Archive() {
         ></h1>
       </Link>
       <InfiniteScroll
-        dataLength={images.length}
+        dataLength={imagesState.images.length}
         next={fetchMore}
         hasMore={true}
         loader={<AculeiLoader />}
       >
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 place-items-center mx-5">
-          {images.map((image, index) => (
+          {imagesState.images.map((image, index) => (
             <div
               key={index}
               className={`relative transition-transform transform ${

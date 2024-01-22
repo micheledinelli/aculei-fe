@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import Video from "../assets/video.mp4";
 import LoadingGif from "../components/LoadingGif";
+import wildboar from "../assets/wild-boar.gif";
 
 export default function Landing() {
   const [isMobile, setIsMobile] = useState(false);
@@ -78,7 +79,7 @@ export default function Landing() {
   }
 
   if (isLoading) {
-    return <LoadingGif />;
+    return <LoadingGif preference={wildboar} />;
   }
 
   return (
