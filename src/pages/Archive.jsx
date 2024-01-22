@@ -5,6 +5,7 @@ import { useScramble } from "use-scramble";
 import InfiniteScroll from "react-infinite-scroll-component";
 import LoadingGif from "../components/LoadingGif";
 import AculeiLoader from "../components/AculeiLoader";
+import porcuspine from "../assets/porcuspine.gif";
 import.meta.env.SERVER_URL;
 
 export default function Archive() {
@@ -91,7 +92,7 @@ export default function Archive() {
   };
 
   if (loadingImages) {
-    return <LoadingGif />;
+    return <LoadingGif preference={porcuspine} />;
   }
 
   return (
