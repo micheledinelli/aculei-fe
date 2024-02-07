@@ -2,7 +2,6 @@ import { NavLink } from "react-router-dom";
 
 import { useEffect, useState } from "react";
 
-import Video from "../assets/video.mp4";
 import LoadingGif from "../components/LoadingGif";
 import wildboar from "../assets/wild-boar.gif";
 
