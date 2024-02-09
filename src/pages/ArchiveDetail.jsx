@@ -162,7 +162,7 @@ export default function ArchiveDetail() {
       </div>
 
       {details && (
-        <p className="font-mono text-2xl text-center">
+        <p className="font-mono text-2xl text-center mt-24">
           In the same{" "}
           <span
             className="underline underline-offset-4 cursor-pointer"

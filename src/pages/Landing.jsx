@@ -84,11 +84,6 @@ export default function Landing() {
   return (
     // Showing the fetched video, if an error occurs than we fallback to the existing one
     <div className="h-screen w-full overflow-x-hidden select-none font-noto">
-      {!isLoading && !videoURL && (
-        <video className="w-full h-full object-cover" autoPlay loop muted>
-          <source src={Video} type="video/mp4" />
-        </video>
-      )}
       {!isLoading && videoURL && (
         <video className="w-full h-full object-cover" autoPlay loop>
           <source src={videoURL} type="video/webm" />
