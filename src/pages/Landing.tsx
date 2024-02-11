@@ -2,14 +2,9 @@ import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Footbar from "../components/Footbar";
 
-export type DatasetInfo = {
-  key: string;
-  value: number;
-};
-
 export default function Landing() {
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
-  const [datasetInfo, setDatasetInfo] = useState<DatasetInfo[]>([]);
+  const [datasetInfo, setDatasetInfo] = useState<DatasetInfo | null>(null);
 
   useEffect(() => {
     const VITE_SERVER_URL = import.meta.env.VITE_SERVER_URL;
@@ -31,22 +26,18 @@ export default function Landing() {
   }, []);
 
   useEffect(() => {
-    fetch(import.meta.env.VITE_SERVER_URL + `/api/v1/dataset`)
+    fetch(import.meta.env.VITE_SERVER_URL + "/api/v1/dataset")
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         return response.json();
       })
-      .then((data) => {
-        const dataArray = Object.entries(data).map(([key, value]) => ({
-          key,
-          value: Number(value),
-        }));
-        setDatasetInfo(dataArray);
+      .then((jsonData: DatasetInfo) => {
+        setDatasetInfo(jsonData);
       })
-      .catch((e) => {
-        console.log(e);
+      .catch((error) => {
+        console.error("Error fetching data:", error);
       });
   }, []);
 
