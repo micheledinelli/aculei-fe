@@ -6,10 +6,16 @@ export default function Navbar() {
       style={{ backgroundImage: `url(${silvered_theme})` }}
     >
       <div className="flex gap-16">
-        <div className="mix-blend-difference cursor-pointer">EXPERIENCE</div>
-        <div className="mix-blend-difference cursor-pointer">ARCHIVE</div>
+        <div className="filter invert mix-blend-difference cursor-pointer">
+          EXPERIENCE
+        </div>
+        <div className="filter invertmix-blend-difference cursor-pointer">
+          ARCHIVE
+        </div>
       </div>
-      <div className="mix-blend-difference cursor-pointer">ABOUT</div>
+      <div className="filter invert mix-blend-difference cursor-pointer">
+        ABOUT
+      </div>
     </div>
   );
 }
