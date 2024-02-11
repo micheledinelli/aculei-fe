@@ -11,7 +11,6 @@ export default function Landing() {
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [datasetInfo, setDatasetInfo] = useState<DatasetInfo[]>([]);
 
-  //fetch random video from server
   useEffect(() => {
     const VITE_SERVER_URL = import.meta.env.VITE_SERVER_URL;
     const videoPath = `${VITE_SERVER_URL}/api/v1/video`;
@@ -37,7 +36,7 @@ export default function Landing() {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        return response.json(); // converti la risposta in un oggetto JavaScript
+        return response.json();
       })
       .then((data) => {
         const dataArray = Object.entries(data).map(([key, value]) => ({
@@ -55,7 +54,7 @@ export default function Landing() {
     <div>
       <Navbar />
       <div className="absolute z-10 md:text-[16rem] lg:text-[20rem] xl:text-[24rem] bottom-0 filter w-full invert mix-blend-difference overflow-hidden">
-        <div className="flex w-full justify-start items-end">ACULEI</div>
+        <div className="flex w-full justify-center">ACULEI</div>
       </div>
       <div>
         {videoUrl && (
@@ -63,6 +62,7 @@ export default function Landing() {
             className="fixed w-full h-full object-cover"
             src={videoUrl}
             autoPlay
+            loop
           />
         )}
       </div>
