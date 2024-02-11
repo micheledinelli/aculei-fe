@@ -3,23 +3,16 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
-      fontFamily: {
-        noto: ["Noto Sans", "sans-serif"],
+      animation: {
+        "infinite-scroll": "infinite-scroll 25s linear infinite",
+      },
+      keyframes: {
+        "infinite-scroll": {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(-100%)" },
+        },
       },
     },
   },
-  plugins: [
-    function ({ addUtilities }) {
-      const newUtilities = {
-        ".no-scroll": {
-          "scrollbar-width": "none" /* Firefox */,
-          "-ms-overflow-style": "none" /* Internet Explorer 10+ */,
-        },
-        ".no-scroll::-webkit-scrollbar": {
-          display: "none" /* Safari and Chrome */,
-        },
-      };
-      addUtilities(newUtilities);
-    },
-  ],
+  plugins: [],
 };
