@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Navbar from "../components/Navbar";
 
 export default function Experience() {
   const [images, setImages] = useState<Image[]>([]);
@@ -13,9 +14,7 @@ export default function Experience() {
         toggleFullScreen(fullScreenIndex);
       }
     };
-
     document.addEventListener("keydown", handleKeyPress);
-
     return () => {
       document.removeEventListener("keydown", handleKeyPress);
     };
@@ -122,6 +121,7 @@ export default function Experience() {
 
   return (
     <div>
+      <Navbar leftPath="/" leftText="HOME" />
       <div className="bg-black h-screen text-white overflow-hidden flex justify-center items-center">
         <div
           className="camera-border md:p-40 bg-red-500 z-50 cursor-fancy"

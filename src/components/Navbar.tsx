@@ -1,16 +1,25 @@
 import { Link } from "react-router-dom";
-import silvered_theme from "../assets/silvered_theme.jpg";
-export default function Navbar() {
+import aculeo from "../assets/aculeo.png";
+
+interface NavbarProps {
+  leftPath: string;
+  leftText: string;
+}
+
+const Navbar: React.FC<NavbarProps> = ({
+  leftPath: linkPath,
+  leftText: linkText,
+}) => {
   return (
     <div
       className="flex fixed top-0 left-0 z-10 w-screen justify-between text-5xl"
-      style={{ backgroundImage: `url(${silvered_theme})` }}
+      style={{ backgroundImage: `url(${aculeo})` }}
     >
-      <div className="flex gap-16">
+      <div className="flex gap-40">
         <div className="filter invert mix-blend-difference cursor-pointer">
-          <Link to="/experience">EXPERIENCE</Link>
+          <Link to={linkPath}>{linkText}</Link>
         </div>
-        <div className="filter invertmix-blend-difference cursor-pointer">
+        <div className="filter invert mix-blend-difference cursor-pointer">
           ARCHIVE
         </div>
       </div>
@@ -19,4 +28,6 @@ export default function Navbar() {
       </div>
     </div>
   );
-}
+};
+
+export default Navbar;
