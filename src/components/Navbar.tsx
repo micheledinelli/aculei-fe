@@ -1,11 +1,6 @@
 import { Link } from "react-router-dom";
 import aculeo from "../assets/aculeo.png";
 
-interface NavbarProps {
-  leftPath: string;
-  leftText: string;
-}
-
 const Navbar: React.FC<NavbarProps> = ({
   leftPath: linkPath,
   leftText: linkText,
