@@ -3,6 +3,7 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Landing from "./pages/Landing";
 import Experience from "./pages/Experience";
+import { ExperienceProvider } from "./contexts/ExperienceContext";
 
 const router = createBrowserRouter([
   {
@@ -16,8 +17,7 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  // <React.StrictMode>
-  //   <RouterProvider router={router} />
-  // </React.StrictMode>
-  <RouterProvider router={router} />
+  <ExperienceProvider>
+    <RouterProvider router={router} />
+  </ExperienceProvider>
 );
