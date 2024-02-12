@@ -120,8 +120,8 @@ export default function Experience() {
   };
 
   return (
-    <div>
-      <Navbar leftPath="/" leftText="HOME" />
+    <div className="">
+      <Navbar showHome={true} />
       <div className="bg-black h-screen text-white overflow-hidden flex justify-center items-center">
         <div
           className="camera-border md:p-40 bg-red-500 z-50 cursor-fancy"

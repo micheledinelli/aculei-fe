@@ -1,4 +1,3 @@
 interface NavbarProps {
-  leftPath: string;
-  leftText: string;
+  showHome: boolean;
 }

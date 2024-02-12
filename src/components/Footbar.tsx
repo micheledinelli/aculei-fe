@@ -1,11 +1,24 @@
 import aculeo from "../assets/aculeo.png";
-import React from "react";
+import { useEffect, useState } from "react";
 
-interface FootbarProps {
-  datasetInfo: DatasetInfo | null;
-}
+export default function Footbar() {
+  const [datasetInfo, setDatasetInfo] = useState<DatasetInfo | null>(null);
+  useEffect(() => {
+    fetch(import.meta.env.VITE_SERVER_URL + "/api/v1/dataset")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((jsonData: DatasetInfo) => {
+        setDatasetInfo(jsonData);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
 
-const Footbar: React.FC<FootbarProps> = ({ datasetInfo }) => {
   if (!datasetInfo) {
     return null;
   }
@@ -24,6 +37,4 @@ const Footbar: React.FC<FootbarProps> = ({ datasetInfo }) => {
       </ul>
     </div>
   );
-};
-
-export default Footbar;
+}
