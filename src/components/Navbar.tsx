@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import silvered_theme from "../assets/silvered_theme.jpg";
 export default function Navbar() {
   return (
@@ -7,7 +8,7 @@ export default function Navbar() {
     >
       <div className="flex gap-16">
         <div className="filter invert mix-blend-difference cursor-pointer">
-          EXPERIENCE
+          <Link to="/experience">EXPERIENCE</Link>
         </div>
         <div className="filter invertmix-blend-difference cursor-pointer">
           ARCHIVE
