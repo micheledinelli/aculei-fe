@@ -31,7 +31,7 @@ no-scroll {
 }
 
 .camera-border {
-  --b: 0.3em; /* thickness of the border */
+  --b: 0.1em; /* thickness of the border */
   --c: white; /* color of the border */
   --w: 2.5em; /* width of border */
 

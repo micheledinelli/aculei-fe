@@ -1,6 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface Image {
   id: number;
+  sha256: string;
   url: string;
   x: number;
   y: number;

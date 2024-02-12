@@ -1,12 +1,21 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
+import Footbar from "../components/Footbar";
+import { useExperience } from "../contexts/ExperienceContext";
 
 export default function Experience() {
-  const [images, setImages] = useState<Image[]>([]);
+  const { images, setImages } = useExperience();
+  const [lastImageSha256, setLastImageSha256] = useState<string | null>(null);
   const [fullScreenIndex, setFullScreenIndex] = useState<number | null>(null);
   const [currentDraggingIndex, setCurrentDraggingIndex] = useState<
     number | null
   >(null);
+
+  useEffect(() => {
+    if (images.length !== 0) {
+      setLastImageSha256(images[images.length - 1].sha256);
+    }
+  }, [images]);
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
@@ -31,6 +40,7 @@ export default function Experience() {
         const imageUrl = URL.createObjectURL(await response.blob());
         const newImage: Image = {
           id: Date.now(),
+          sha256: response.headers.get("X-Sha256") || "",
           url: imageUrl,
           x: Math.random() * (window.innerWidth - 200),
           y: Math.random() * (window.innerHeight - 200),
@@ -120,17 +130,15 @@ export default function Experience() {
   };
 
   return (
-    <div className="">
+    <div className="font-texgyreheros_regular">
       <Navbar showHome={true} />
       <div className="bg-black h-screen text-white overflow-hidden flex justify-center items-center">
         <div
-          className="camera-border md:p-40 bg-red-500 z-50 cursor-fancy"
+          className="md:p-40 bg-red-500 cursor-fancy z-10"
           onClick={fetchNewImage}
-        >
-          {""}
-        </div>
+        ></div>
         <div
-          className="absolute top-0 left-0 w-screen h-screen overflow-ellipsis overflow-hidden"
+          className="absolute top-0 left-0 w-screen h-screen z-10 overflow-ellipsis overflow-hidden"
           onMouseMove={(e: React.MouseEvent<HTMLDivElement>) =>
             currentDraggingIndex !== null &&
             handleMouseMove(e, currentDraggingIndex)
@@ -154,7 +162,6 @@ export default function Experience() {
                     top: image.y,
                     width: image.isFullScreen ? "0" : `${image.width}px`,
                     height: image.isFullScreen ? "0" : `${image.height}px`,
-                    cursor: image.isDragging ? "grabbing" : "pointer",
                     zIndex: image.isDragging ? 9999 : image.zIndex,
                     objectFit: "cover",
                     transform: image.isFullScreen
@@ -164,12 +171,23 @@ export default function Experience() {
                   onMouseDown={(e) => handleMouseDown(e, index)}
                   onMouseUp={() => handleMouseUp(index)}
                   onDoubleClick={() => toggleFullScreen(index)}
+                  className={`${
+                    lastImageSha256 === image.sha256
+                      ? "border-4 border-green-600"
+                      : "z-[9999]"
+                  } cursor-move`}
                 />
               )}
             </React.Fragment>
           ))}
         </div>
       </div>
+      {lastImageSha256 && (
+        <Footbar
+          key={lastImageSha256}
+          path={`selecta/images/${lastImageSha256}`}
+        />
+      )}
     </div>
   );
 }
