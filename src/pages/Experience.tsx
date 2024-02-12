@@ -22,10 +22,10 @@ export default function Experience() {
 
   const fetchNewImage = async () => {
     try {
-      let apiUrl =
-        import.meta.env.VITE_SERVER_URL + "api/v1/selecta/images/random";
+      const VITE_SERVER_URL = import.meta.env.VITE_SERVER_URL;
+      const imagePath = `${VITE_SERVER_URL}/api/v1/selecta/images/random`;
 
-      const response = await fetch(apiUrl);
+      const response = await fetch(imagePath);
 
       if (response.ok) {
         const imageUrl = URL.createObjectURL(await response.blob());
