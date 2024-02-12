@@ -3,6 +3,10 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        texgyreheros_regular: ["texgyreheros-regular", "sans-serif"],
+        mono_lite: ["mono-lite-regular", "monospace"],
+      },
       animation: {
         "infinite-scroll": "infinite-scroll 70s linear infinite",
       },
