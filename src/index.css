@@ -2,12 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "texgyreheros-regular";
+  src: url("../src/fonts/qhv2/texgyreheroscn-regular.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "mono-lite-regular";
+  src: url("../src/fonts/qhv2/Q-04LITE-Regular.ttf") format("opentype");
+}
+
 @layer utilities {
   .pause {
     animation-play-state: paused;
   }
 }
-
+#title{
+  font-size: calc(16vw + 16vh + 8vmin);
+  line-height: calc(16vw + 16vh + 8vmin);
+}
 no-scroll {
   -ms-overflow-style: none;
   scrollbar-width: none;
