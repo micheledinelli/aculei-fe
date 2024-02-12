@@ -1,4 +1,4 @@
-import silvered_theme from "../assets/silvered_theme.jpg";
+import aculeo from "../assets/aculeo.png";
 import React from "react";
 
 interface FootbarProps {
@@ -13,7 +13,7 @@ const Footbar: React.FC<FootbarProps> = ({ datasetInfo }) => {
   return (
     <div
       className="w-full inline-flex flex-nowrap absolute bottom-0 opacity-500 overflow-hidden"
-      style={{ backgroundImage: `url(${silvered_theme})` }}
+      style={{ backgroundImage: `url(${aculeo})` }}
     >
       <ul className="hover:pause z-10 flex items-center justify-center md:justify-start [&_li]:mx-8 my-2 animate-infinite-scroll no-scroll whitespace-nowrap filter invert mix-blend-difference">
         {Object.entries(datasetInfo).map(([key, value]) => (

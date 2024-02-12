@@ -43,7 +43,7 @@ export default function Landing() {
 
   return (
     <div>
-      <Navbar />
+      <Navbar leftPath="/experience" leftText="EXPERIENCE" />
       <div className="absolute z-10 md:text-[16rem] lg:text-[20rem] xl:text-[24rem] bottom-0 filter w-full invert mix-blend-difference overflow-hidden">
         <div className="flex w-full justify-center">ACULEI</div>
       </div>
