@@ -12,7 +12,7 @@ export default function Experience() {
   >(null);
 
   useEffect(() => {
-    if (images.length !== 0) {
+    if (images.length > 0) {
       setLastImageSha256(images[images.length - 1].sha256);
     }
   }, [images]);
@@ -149,7 +149,7 @@ export default function Experience() {
               {fullScreenIndex === index && image.isFullScreen ? (
                 <img
                   src={image.url}
-                  className="absolute top-0 left-0 w-screen h-screen object-scale-down z-[9999]"
+                  className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-screen h-3/4 object-scale-down z-[9999]"
                   onClick={() => toggleFullScreen(index)}
                 />
               ) : (
