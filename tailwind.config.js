@@ -16,9 +16,6 @@ export default {
           to: { transform: "translateX(-100%)" },
         },
       },
-      cursor: {
-        fancy: "url(src/assets/camera-cursor.svg), pointer;",
-      },
     },
   },
   plugins: [],
