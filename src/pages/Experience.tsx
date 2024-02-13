@@ -134,11 +134,11 @@ export default function Experience() {
       <Navbar showHome={true} />
       <div className="bg-black h-screen text-white overflow-hidden flex justify-center items-center">
         <div
-          className="md:p-40 bg-red-500 cursor-fancy z-10"
+          className="md:p-40 cursor-fancy z-10"
           onClick={fetchNewImage}
         ></div>
         <div
-          className="absolute top-0 left-0 w-screen h-screen z-10 overflow-ellipsis overflow-hidden"
+          className="absolute top-0 left-0 w-screen h-screen overflow-ellipsis overflow-hidden"
           onMouseMove={(e: React.MouseEvent<HTMLDivElement>) =>
             currentDraggingIndex !== null &&
             handleMouseMove(e, currentDraggingIndex)
