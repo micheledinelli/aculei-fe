@@ -134,7 +134,7 @@ export default function Experience() {
       <Navbar showHome={true} />
       <div className="bg-black h-screen text-white overflow-hidden flex justify-center items-center">
         <div
-          className="md:p-40 cursor-fancy z-10"
+          className="md:p-40 cursor-fancy camera-border z-10"
           onClick={fetchNewImage}
         ></div>
         <div
@@ -174,7 +174,7 @@ export default function Experience() {
                   className={`${
                     lastImageSha256 === image.sha256
                       ? "border-4 border-green-600"
-                      : "z-[9999]"
+                      : ""
                   } cursor-move`}
                 />
               )}
