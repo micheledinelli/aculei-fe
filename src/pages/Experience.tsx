@@ -182,12 +182,7 @@ export default function Experience() {
           ))}
         </div>
       </div>
-      {lastImageSha256 && (
-        <Footbar
-          key={lastImageSha256}
-          path={`selecta/images/${lastImageSha256}`}
-        />
-      )}
+      <Footbar />
     </div>
   );
 }

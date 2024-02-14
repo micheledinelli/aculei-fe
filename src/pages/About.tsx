@@ -5,7 +5,7 @@ export default function About() {
   return (
     <div className="font-texgyreheros_regular">
       <Navbar showHome={true} />
-      <Footbar path="dataset" />
+      <Footbar />
     </div>
   );
 }

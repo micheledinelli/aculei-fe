@@ -43,7 +43,7 @@ export default function Landing() {
           />
         )}
       </div>
-      <Footbar path={"dataset"} />
+      <Footbar />
     </div>
   );
 }

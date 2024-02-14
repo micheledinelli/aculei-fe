@@ -1,10 +1,10 @@
 import aculeo from "../assets/aculeo.png";
 import { useEffect, useState } from "react";
 
-export default function Footbar({ path }: { path: string }) {
+export default function Footbar() {
   const [datasetInfo, setDatasetInfo] = useState<DatasetInfo | null>(null);
   useEffect(() => {
-    fetch(import.meta.env.VITE_SERVER_URL + `/api/v1/${path}`)
+    fetch(import.meta.env.VITE_SERVER_URL + "/api/v1/dataset")
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
