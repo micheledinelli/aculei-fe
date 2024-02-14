@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import Navbar from "../components/Navbar";
+import React, { useState } from "react";
 import Footbar from "../components/Footbar";
-import { useExperience } from "../contexts/ExperienceContext";
 import ImageInfo from "../components/ImageInfo";
+import Navbar from "../components/Navbar";
+import { useExperience } from "../contexts/ExperienceContext";
 
 export default function Experience() {
   const { images, setImages } = useExperience();
@@ -11,12 +11,6 @@ export default function Experience() {
   const [currentDraggingIndex, setCurrentDraggingIndex] = useState<
     number | null
   >(null);
-
-  useEffect(() => {
-    if (images.length > 0) {
-      setLastImageSha256(images[images.length - 1].sha256);
-    }
-  }, [images]);
 
   const fetchNewImage = async () => {
     try {
@@ -44,6 +38,7 @@ export default function Experience() {
           dragStartY: 0,
         };
         setImages((prevImages) => [...prevImages, newImage]);
+        setLastImageSha256(newImage.sha256);
       } else {
         console.error("Failed to fetch image");
       }
@@ -52,20 +47,20 @@ export default function Experience() {
     }
   };
 
-  const toggleFullScreen = (index: number) => {
-    setImages((prevImages) => {
-      const updatedImages = [...prevImages];
-      updatedImages[index].isFullScreen = !updatedImages[index].isFullScreen;
-      return updatedImages;
-    });
+  // const toggleFullScreen = (index: number) => {
+  //   setImages((prevImages) => {
+  //     const updatedImages = [...prevImages];
+  //     updatedImages[index].isFullScreen = !updatedImages[index].isFullScreen;
+  //     return updatedImages;
+  //   });
 
-    setFullScreenIndex((prevIndex) => {
-      if (prevIndex === index) {
-        return null;
-      }
-      return index;
-    });
-  };
+  //   setFullScreenIndex((prevIndex) => {
+  //     if (prevIndex === index) {
+  //       return null;
+  //     }
+  //     return index;
+  //   });
+  // };
 
   const handleMouseDown = (
     e: React.MouseEvent<HTMLImageElement>,
@@ -146,7 +141,7 @@ export default function Experience() {
                 <img
                   src={image.url}
                   className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-screen h-3/4 object-scale-down z-[9999]"
-                  onClick={() => toggleFullScreen(index)}
+                  // onClick={() => toggleFullScreen(index)}
                 />
               ) : (
                 <img
@@ -166,7 +161,7 @@ export default function Experience() {
                   }}
                   onMouseDown={(e) => handleMouseDown(e, index)}
                   onMouseUp={(e) => handleMouseUp(e, index)}
-                  onDoubleClick={() => {
+                  onClick={() => {
                     setLastImageSha256(image.sha256);
                   }}
                   className={`${
