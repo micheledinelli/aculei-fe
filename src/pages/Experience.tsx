@@ -3,7 +3,6 @@ import Navbar from "../components/Navbar";
 import Footbar from "../components/Footbar";
 import { useExperience } from "../contexts/ExperienceContext";
 import ImageInfo from "../components/ImageInfo";
-import { log } from "console";
 
 export default function Experience() {
   const { images, setImages } = useExperience();
