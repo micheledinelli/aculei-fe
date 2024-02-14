@@ -8,7 +8,7 @@ export default {
         mono_lite: ["mono-lite-regular", "monospace"],
       },
       animation: {
-        "infinite-scroll": "infinite-scroll 70s linear infinite",
+        "infinite-scroll": "infinite-scroll 100s linear infinite",
       },
       keyframes: {
         "infinite-scroll": {
