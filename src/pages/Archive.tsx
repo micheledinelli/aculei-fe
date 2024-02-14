@@ -5,7 +5,7 @@ export default function Archive() {
   return (
     <>
       <Navbar showHome={true} />
-      <Footbar path="dataset" />
+      <Footbar />
     </>
   );
 }
