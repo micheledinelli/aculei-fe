@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footbar from "../components/Footbar";
 import { useExperience } from "../contexts/ExperienceContext";
+import ImageInfo from "../components/ImageInfo";
+import { log } from "console";
 
 export default function Experience() {
   const { images, setImages } = useExperience();
@@ -16,18 +18,6 @@ export default function Experience() {
       setLastImageSha256(images[images.length - 1].sha256);
     }
   }, [images]);
-
-  useEffect(() => {
-    const handleKeyPress = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && fullScreenIndex !== null) {
-        toggleFullScreen(fullScreenIndex);
-      }
-    };
-    document.addEventListener("keydown", handleKeyPress);
-    return () => {
-      document.removeEventListener("keydown", handleKeyPress);
-    };
-  }, [fullScreenIndex]);
 
   const fetchNewImage = async () => {
     try {
@@ -84,6 +74,8 @@ export default function Experience() {
   ) => {
     setCurrentDraggingIndex(index);
     e.preventDefault();
+    e.stopPropagation();
+    e.preventDefault();
     const { clientX, clientY } = e;
     e.persist();
     setImages((prevImages) => {
@@ -110,7 +102,12 @@ export default function Experience() {
     }
   };
 
-  const handleMouseUp = (index: number) => {
+  const handleMouseUp = (
+    e: React.MouseEvent<HTMLImageElement>,
+    index: number
+  ) => {
+    e.preventDefault();
+    e.stopPropagation();
     setImages((prevImages) => {
       const updatedImages = prevImages.map((image, i) => {
         if (i === index) {
@@ -169,8 +166,10 @@ export default function Experience() {
                       : `translate(-50%, -50%)`,
                   }}
                   onMouseDown={(e) => handleMouseDown(e, index)}
-                  onMouseUp={() => handleMouseUp(index)}
-                  onDoubleClick={() => toggleFullScreen(index)}
+                  onMouseUp={(e) => handleMouseUp(e, index)}
+                  onDoubleClick={() => {
+                    setLastImageSha256(image.sha256);
+                  }}
                   className={`${
                     lastImageSha256 === image.sha256
                       ? "border-4 border-green-600"
@@ -182,6 +181,7 @@ export default function Experience() {
           ))}
         </div>
       </div>
+      {<ImageInfo key={lastImageSha256} imageId={lastImageSha256 || ""} />}
       <Footbar />
     </div>
   );

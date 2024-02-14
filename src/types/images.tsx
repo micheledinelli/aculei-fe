@@ -15,3 +15,7 @@ interface Image {
   dragStartX: number;
   dragStartY: number;
 }
+
+interface ImageId {
+  imageId: string;
+}
