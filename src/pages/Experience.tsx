@@ -47,20 +47,20 @@ export default function Experience() {
     }
   };
 
-  // const toggleFullScreen = (index: number) => {
-  //   setImages((prevImages) => {
-  //     const updatedImages = [...prevImages];
-  //     updatedImages[index].isFullScreen = !updatedImages[index].isFullScreen;
-  //     return updatedImages;
-  //   });
+  const toggleFullScreen = (index: number) => {
+    setImages((prevImages) => {
+      const updatedImages = [...prevImages];
+      updatedImages[index].isFullScreen = !updatedImages[index].isFullScreen;
+      return updatedImages;
+    });
 
-  //   setFullScreenIndex((prevIndex) => {
-  //     if (prevIndex === index) {
-  //       return null;
-  //     }
-  //     return index;
-  //   });
-  // };
+    setFullScreenIndex((prevIndex) => {
+      if (prevIndex === index) {
+        return null;
+      }
+      return index;
+    });
+  };
 
   const handleMouseDown = (
     e: React.MouseEvent<HTMLImageElement>,
@@ -140,8 +140,8 @@ export default function Experience() {
               {fullScreenIndex === index && image.isFullScreen ? (
                 <img
                   src={image.url}
-                  className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-screen h-3/4 object-scale-down z-[9999]"
-                  // onClick={() => toggleFullScreen(index)}
+                  className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-screen h-4/5 object-scale-down z-[9999]"
+                  onClick={() => toggleFullScreen(index)}
                 />
               ) : (
                 <img
@@ -164,6 +164,7 @@ export default function Experience() {
                   onClick={() => {
                     setLastImageSha256(image.sha256);
                   }}
+                  onDoubleClick={() => toggleFullScreen(index)}
                   className={`${
                     lastImageSha256 === image.sha256
                       ? "border-4 border-green-600"
