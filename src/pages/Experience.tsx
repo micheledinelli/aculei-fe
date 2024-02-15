@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Footbar from "../components/Footbar";
 import ImageInfo from "../components/ImageInfo";
 import Navbar from "../components/Navbar";
@@ -13,7 +13,6 @@ export default function Experience() {
   const [currentDraggingIndex, setCurrentDraggingIndex] = useState<
     number | null
   >(null);
-
   const fetchNewImage = () => {
     let newImage: Image | null = null;
 
@@ -32,8 +31,8 @@ export default function Experience() {
             id: Date.now(),
             sha256: sha256,
             url: imageUrl,
-            x: Math.random() * (window.innerWidth - 200),
-            y: Math.random() * (window.innerHeight - 200),
+            x: Math.random() * (window.innerWidth - 300) + 150,
+            y: Math.random() * (window.innerHeight - 300) + 150,
             width: 300,
             height: 300,
             offsetX: 0,
@@ -120,7 +119,9 @@ export default function Experience() {
       });
     }
   };
-
+  useEffect(() => {
+    console.log(window.innerWidth, window.innerHeight);
+  }, []);
   const handleMouseUp = (
     e: React.MouseEvent<HTMLImageElement>,
     index: number
