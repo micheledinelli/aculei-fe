@@ -1,27 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-export default function PhotoInfo({ imageId }: ImageId) {
-  const [datasetInfo, setDatasetInfo] = useState<DatasetInfo | null>(null);
+export default function PhotoInfo({
+  datasetInfo,
+}: {
+  datasetInfo: DatasetInfo;
+}) {
   const [selectedButton, setSelectedButton] = useState<string | null>(null);
   const [isContentVisible, setContentVisible] = useState(false);
-
-  useEffect(() => {
-    if (!imageId) return;
-
-    fetch(import.meta.env.VITE_SERVER_URL + "/api/v1/selecta/images/" + imageId)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((jsonData: DatasetInfo) => {
-        setDatasetInfo(jsonData);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, []);
 
   const handleClick = (key: string) => {
     if (selectedButton === key) {

@@ -7,50 +7,72 @@ import { useExperience } from "../contexts/ExperienceContext";
 export default function Experience() {
   const { images, setImages } = useExperience();
   const [lastImageSha256, setLastImageSha256] = useState<string | null>(null);
+  const [lastImageDatasetInfo, setLastImageDatasetInfo] =
+    useState<DatasetInfo>();
   const [fullScreenIndex, setFullScreenIndex] = useState<number | null>(null);
   const [currentDraggingIndex, setCurrentDraggingIndex] = useState<
     number | null
   >(null);
 
-  const fetchNewImage = async () => {
-    try {
-      const VITE_SERVER_URL = import.meta.env.VITE_SERVER_URL;
-      const imagePath = `${VITE_SERVER_URL}/api/v1/selecta/images/random`;
+  const fetchNewImage = () => {
+    let newImage: Image | null = null;
 
-      const response = await fetch(imagePath);
-
-      if (response.ok) {
-        const imageUrl = URL.createObjectURL(await response.blob());
-        const newImage: Image = {
-          id: Date.now(),
-          sha256: response.headers.get("X-Sha256") || "",
-          url: imageUrl,
-          x: Math.random() * (window.innerWidth - 200),
-          y: Math.random() * (window.innerHeight - 200),
-          width: 300,
-          height: 300,
-          offsetX: 0,
-          offsetY: 0,
-          isDragging: false,
-          isFullScreen: false,
-          zIndex: 0,
-          dragStartX: 0,
-          dragStartY: 0,
+    fetch(import.meta.env.VITE_SERVER_URL + "/api/v1/selecta/images/random")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const sha256 = response.headers.get("X-Sha256") || "";
+        return Promise.all([response.blob(), sha256]);
+      })
+      .then(([blob, sha256]) => {
+        const imageUrl = URL.createObjectURL(blob);
+        newImage = {
+          businessLogic: {
+            id: Date.now(),
+            sha256: sha256,
+            url: imageUrl,
+            x: Math.random() * (window.innerWidth - 200),
+            y: Math.random() * (window.innerHeight - 200),
+            width: 300,
+            height: 300,
+            offsetX: 0,
+            offsetY: 0,
+            isDragging: false,
+            isFullScreen: false,
+            zIndex: 0,
+            dragStartX: 0,
+            dragStartY: 0,
+          },
+          imageInfo: {},
         };
-        setImages((prevImages) => [...prevImages, newImage]);
-        setLastImageSha256(newImage.sha256);
-      } else {
-        console.error("Failed to fetch image");
-      }
-    } catch (error) {
-      console.error("Error fetching image:", error);
-    }
+        return fetch(
+          import.meta.env.VITE_SERVER_URL + "/api/v1/selecta/images/" + sha256
+        );
+      })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((jsonData: DatasetInfo) => {
+        if (newImage) {
+          newImage.imageInfo = jsonData;
+          setImages((prevImages) => [...prevImages, newImage as Image]);
+          setLastImageDatasetInfo(jsonData);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
   };
 
   const toggleFullScreen = (index: number) => {
     setImages((prevImages) => {
       const updatedImages = [...prevImages];
-      updatedImages[index].isFullScreen = !updatedImages[index].isFullScreen;
+      updatedImages[index].businessLogic.isFullScreen =
+        !updatedImages[index].businessLogic.isFullScreen;
       return updatedImages;
     });
 
@@ -69,14 +91,15 @@ export default function Experience() {
     setCurrentDraggingIndex(index);
     e.preventDefault();
     e.stopPropagation();
-    e.preventDefault();
     const { clientX, clientY } = e;
     e.persist();
     setImages((prevImages) => {
       const updatedImages = [...prevImages];
-      updatedImages[index].isDragging = true;
-      updatedImages[index].dragStartX = clientX - updatedImages[index].x;
-      updatedImages[index].dragStartY = clientY - updatedImages[index].y;
+      updatedImages[index].businessLogic.isDragging = true;
+      updatedImages[index].businessLogic.dragStartX =
+        clientX - updatedImages[index].businessLogic.x;
+      updatedImages[index].businessLogic.dragStartY =
+        clientY - updatedImages[index].businessLogic.y;
       return updatedImages;
     });
   };
@@ -85,12 +108,14 @@ export default function Experience() {
     e: React.MouseEvent<HTMLDivElement>,
     index: number
   ) => {
-    if (images[index]?.isDragging) {
+    if (images[index]?.businessLogic.isDragging) {
       const { clientX, clientY } = e;
       setImages((prevImages) => {
         const updatedImages = [...prevImages];
-        updatedImages[index].x = clientX - updatedImages[index].dragStartX;
-        updatedImages[index].y = clientY - updatedImages[index].dragStartY;
+        updatedImages[index].businessLogic.x =
+          clientX - updatedImages[index].businessLogic.dragStartX;
+        updatedImages[index].businessLogic.y =
+          clientY - updatedImages[index].businessLogic.dragStartY;
         return updatedImages;
       });
     }
@@ -101,25 +126,29 @@ export default function Experience() {
     index: number
   ) => {
     e.preventDefault();
-    e.stopPropagation();
     setImages((prevImages) => {
       const updatedImages = prevImages.map((image, i) => {
         if (i === index) {
           return {
             ...image,
-            isDragging: false,
-            zIndex: 1,
+            businessLogic: {
+              ...image.businessLogic,
+              isDragging: false,
+              zIndex: 1,
+            },
           };
         }
         return {
           ...image,
-          zIndex: 0,
+          businessLogic: {
+            ...image.businessLogic,
+            zIndex: 0,
+          },
         };
       });
       return updatedImages;
     });
   };
-
   return (
     <div className="font-texgyreheros_regular">
       <Navbar showHome={true} />
@@ -136,37 +165,44 @@ export default function Experience() {
           }
         >
           {images.map((image, index) => (
-            <React.Fragment key={image.id}>
-              {fullScreenIndex === index && image.isFullScreen ? (
+            <React.Fragment key={image.businessLogic.id}>
+              {fullScreenIndex === index && image.businessLogic.isFullScreen ? (
                 <img
-                  src={image.url}
+                  src={image.businessLogic.url}
                   className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-screen h-4/5 object-scale-down z-[9999]"
                   onClick={() => toggleFullScreen(index)}
                 />
               ) : (
                 <img
-                  key={image.id}
-                  src={image.url}
+                  key={image.businessLogic.id}
+                  src={image.businessLogic.url}
                   style={{
                     position: "absolute",
-                    left: image.x,
-                    top: image.y,
-                    width: image.isFullScreen ? "0" : `${image.width}px`,
-                    height: image.isFullScreen ? "0" : `${image.height}px`,
-                    zIndex: image.isDragging ? 9999 : image.zIndex,
+                    left: image.businessLogic.x,
+                    top: image.businessLogic.y,
+                    width: image.businessLogic.isFullScreen
+                      ? "0"
+                      : `${image.businessLogic.width}px`,
+                    height: image.businessLogic.isFullScreen
+                      ? "0"
+                      : `${image.businessLogic.height}px`,
+                    zIndex: image.businessLogic.isDragging
+                      ? 9999
+                      : image.businessLogic.zIndex,
                     objectFit: "cover",
-                    transform: image.isFullScreen
+                    transform: image.businessLogic.isFullScreen
                       ? "none"
                       : `translate(-50%, -50%)`,
                   }}
                   onMouseDown={(e) => handleMouseDown(e, index)}
                   onMouseUp={(e) => handleMouseUp(e, index)}
                   onClick={() => {
-                    setLastImageSha256(image.sha256);
+                    setLastImageSha256(image.businessLogic.sha256);
+                    setLastImageDatasetInfo(image.imageInfo);
                   }}
                   onDoubleClick={() => toggleFullScreen(index)}
                   className={`${
-                    lastImageSha256 === image.sha256
+                    lastImageSha256 === image.businessLogic.sha256
                       ? "border-4 border-green-600"
                       : ""
                   } cursor-move`}
@@ -176,7 +212,9 @@ export default function Experience() {
           ))}
         </div>
       </div>
-      {<ImageInfo key={lastImageSha256} imageId={lastImageSha256 || ""} />}
+      {lastImageDatasetInfo && (
+        <ImageInfo key={lastImageSha256} datasetInfo={lastImageDatasetInfo} />
+      )}
       <Footbar />
     </div>
   );
