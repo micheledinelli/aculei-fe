@@ -3,6 +3,7 @@ import Footbar from "../components/Footbar";
 import ImageInfo from "../components/ImageInfo";
 import Navbar from "../components/Navbar";
 import { useExperience } from "../contexts/ExperienceContext";
+import SingleExperienceImage from "../components/SingleExperienceImage";
 
 export default function Experience() {
   const { images, setImages } = useExperience();
@@ -174,39 +175,19 @@ export default function Experience() {
                   onClick={() => toggleFullScreen(index)}
                 />
               ) : (
-                <img
-                  key={image.businessLogic.id}
-                  src={image.businessLogic.url}
-                  style={{
-                    position: "absolute",
-                    left: image.businessLogic.x,
-                    top: image.businessLogic.y,
-                    width: image.businessLogic.isFullScreen
-                      ? "0"
-                      : `${image.businessLogic.width}px`,
-                    height: image.businessLogic.isFullScreen
-                      ? "0"
-                      : `${image.businessLogic.height}px`,
-                    zIndex: image.businessLogic.isDragging
-                      ? 9999
-                      : image.businessLogic.zIndex,
-                    objectFit: "cover",
-                    transform: image.businessLogic.isFullScreen
-                      ? "none"
-                      : `translate(-50%, -50%)`,
-                  }}
-                  onMouseDown={(e) => handleMouseDown(e, index)}
-                  onMouseUp={(e) => handleMouseUp(e, index)}
-                  onClick={() => {
-                    setLastImageSha256(image.businessLogic.sha256);
-                    setLastImageDatasetInfo(image.imageInfo);
-                  }}
-                  onDoubleClick={() => toggleFullScreen(index)}
-                  className={`${
-                    lastImageSha256 === image.businessLogic.sha256
-                      ? "border-4 border-green-600"
-                      : ""
-                  } cursor-move`}
+                <SingleExperienceImage
+                  index={index}
+                  image={image}
+                  handleMouseDown={(e: React.MouseEvent<HTMLImageElement>) =>
+                    handleMouseDown(e, index)
+                  }
+                  handleMouseUp={(e: React.MouseEvent<HTMLImageElement>) =>
+                    handleMouseUp(e, index)
+                  }
+                  setLastImageSha256={setLastImageSha256}
+                  lastImageSha256={lastImageSha256!}
+                  setLastImageDatasetInfo={setLastImageDatasetInfo}
+                  toggleFullScreen={() => toggleFullScreen(index)}
                 />
               )}
             </React.Fragment>
