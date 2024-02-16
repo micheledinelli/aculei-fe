@@ -91,18 +91,3 @@ export default function SingleExperienceImage({
     </div>
   );
 }
-
-// ...
-
-// // Use the new component for each image
-// images.map((image, index) => (
-//   <ImageWithSVG
-//     image={image}
-//     index={index}
-//     handleMouseDown={handleMouseDown}
-//     handleMouseUp={handleMouseUp}
-//     setLastImageSha256={setLastImageSha256}
-//     setLastImageDatasetInfo={setLastImageDatasetInfo}
-//     toggleFullScreen={toggleFullScreen}
-//   />
-// ))
