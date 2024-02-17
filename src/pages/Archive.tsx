@@ -5,6 +5,7 @@ export default function Archive() {
   return (
     <>
       <Navbar showHome={true} />
+      <div className="font-texgyreheros_regular"></div>
       <Footbar />
     </>
   );

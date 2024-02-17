@@ -1,11 +1,12 @@
 import ReactDOM from "react-dom/client";
-import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { ExperienceProvider } from "./contexts/ExperienceContext";
 import Landing from "./pages/Landing";
 import Experience from "./pages/Experience";
-import Error from "./pages/Error";
-import { ExperienceProvider } from "./contexts/ExperienceContext";
+import Archive from "./pages/Archive";
 import Mobile from "./pages/Mobile";
+import Error from "./pages/Error";
+import "./index.css";
 
 const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
   {
     path: "/experience",
     element: <Experience />,
+  },
+  {
+    path: "/archive",
+    element: <Archive />,
   },
 ]);
 
