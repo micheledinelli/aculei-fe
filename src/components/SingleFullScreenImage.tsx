@@ -13,11 +13,11 @@ export default function SingleFullScreenImage({
   const [isLoaded, setIsLoaded] = useState(false);
   return (
     <div
-      className="absolute flex justify-center items-center w-screen h-screen z-20 bg-black bg-opacity-70"
+      className="absolute flex justify-center items-center w-screen h-screen z-20 bg-black bg-opacity-90"
       onClick={() => toggleFullScreen(index)}
     >
       <div
-        className={`relative w-1/2 h-1/2 ${
+        className={`relative w-[70%] h-[70%] ${
           isHovered ? "text-gray-200" : "text-gray-600"
         }`}
         onMouseEnter={() => setIsHovered(true)}
