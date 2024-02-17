@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import Footbar from "../components/Footbar";
 import ImageInfo from "../components/ImageInfo";
 import Navbar from "../components/Navbar";
+import Single300x300Image from "../components/Single300x300Image";
+import SingleFullScreenImage from "../components/SingleFullScreenImage";
 import { useExperience } from "../contexts/ExperienceContext";
-import SingleExperienceImage from "../components/SingleExperienceImage";
 
 export default function Experience() {
   const { images, setImages } = useExperience();
@@ -169,13 +170,13 @@ export default function Experience() {
           {images.map((image, index) => (
             <React.Fragment key={image.businessLogic.id}>
               {fullScreenIndex === index && image.businessLogic.isFullScreen ? (
-                <img
-                  src={image.businessLogic.url}
-                  className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-screen h-4/5 object-scale-down z-[9999]"
-                  onClick={() => toggleFullScreen(index)}
+                <SingleFullScreenImage
+                  index={index}
+                  image={image}
+                  toggleFullScreen={toggleFullScreen}
                 />
               ) : (
-                <SingleExperienceImage
+                <Single300x300Image
                   index={index}
                   image={image}
                   handleMouseDown={(e: React.MouseEvent<HTMLImageElement>) =>
