@@ -28,15 +28,33 @@ export default function Experience() {
       })
       .then(([blob, sha256]) => {
         const imageUrl = URL.createObjectURL(blob);
+        const squareSize = 322;
+        const imageSize = 300;
+
+        let newX, newY;
+
+        newX = Math.random() * (window.innerWidth - imageSize) + 150;
+        newY = Math.random() * (window.innerHeight - imageSize) + 150;
+
+        while (
+          newX < window.innerWidth / 2 + squareSize / 2 &&
+          newX + imageSize > window.innerWidth / 2 - squareSize / 2 &&
+          newY < window.innerHeight / 2 + squareSize / 2 &&
+          newY + imageSize > window.innerHeight / 2 - squareSize / 2
+        ) {
+          newX = Math.random() * (window.innerWidth - imageSize) + 150;
+          newY = Math.random() * (window.innerHeight - imageSize) + 150;
+        }
+
         newImage = {
           businessLogic: {
             id: Date.now(),
             sha256: sha256,
             url: imageUrl,
-            x: Math.random() * (window.innerWidth - 300) + 150,
-            y: Math.random() * (window.innerHeight - 300) + 150,
-            width: 300,
-            height: 300,
+            x: newX || 0,
+            y: newY || 0,
+            width: imageSize,
+            height: imageSize,
             offsetX: 0,
             offsetY: 0,
             isDragging: false,
@@ -157,7 +175,7 @@ export default function Experience() {
       <Navbar showHome={true} />
       <div className="bg-black h-screen text-white overflow-hidden flex justify-center items-center">
         <div
-          className="md:p-40 custom-cursor camera-border z-10"
+          className="p-10 md:p-20 lg:p-30 xl:p-28 custom-cursor camera-border z-10"
           onClick={fetchNewImage}
         ></div>
         <div

@@ -17,7 +17,7 @@ export default function SingleFullScreenImage({
       onClick={() => toggleFullScreen(index)}
     >
       <div
-        className={`relative w-[70%] h-[70%] ${
+        className={`relative h-[70%] ${
           isHovered ? "text-gray-200" : "text-gray-600"
         }`}
         onMouseEnter={() => setIsHovered(true)}
@@ -50,7 +50,7 @@ export default function SingleFullScreenImage({
 
         <img
           src={image.businessLogic.url}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-contain"
           onClick={() => toggleFullScreen(index)}
           onLoad={() => {
             setIsLoaded(true);

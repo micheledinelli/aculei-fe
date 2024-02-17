@@ -50,7 +50,6 @@ no-scroll {
     conic-gradient(from -90deg at bottom var(--b) right var(--b), var(--_g))
       100% 100% / var(--_p);
 }
-
 .custom-cursor {
   cursor: url("../src/assets/camera-cursor.svg"), auto;
 }
